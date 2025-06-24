@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b3c9e9a972fed741a25a4e243f70aa3, type: 3}
+  m_Name: ExampleBoquinhasConfigurationSettings
+  m_EditorClassIdentifier: 
+  gameName: Exemplo - Esqueleto Boquinhas
+  mainMenuLogo: {fileID: 21300000, guid: 2843c53c4067d764fbd40116f93fefb6, type: 3}
+  bookSprite: {fileID: 0}
+  gameNameAudio: {fileID: 8300000, guid: 82d9e94e2560fce44b8b2167438b618d, type: 3}
+  mainMenuMusic: {fileID: 8300000, guid: 200562307ed8fdf469a64acb7df49512, type: 3}
+  gamePlayMusic: {fileID: 8300000, guid: 4afac838a0f134f438f947069a810e69, type: 3}
+  musicVolume: 0.519
+  howToPlay: asd
+  difficultyModeScheme: 6
+  gameSceneName: RoundManager_Sample
+  playAgainOnly: 0
+  maxRounds_1Player: 10
+  maxRounds_2Players: 2
+  maxRounds_3Players: 6
+  maxRounds_4Players: 6
+  gameDurationEasy: 60
+  gameDurationMedium: 50
+  gameDurationHard: 40
+  canTryAgain: 1
+  skipTurnAfter2Errors: 1

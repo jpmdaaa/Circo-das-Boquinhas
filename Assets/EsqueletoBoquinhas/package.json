@@ -1,0 +1,14 @@
+{
+  "name": "com.playmove.esqueletoboquinhas",
+  "displayName": "Esqueleto Boquinhas",
+  "version": "1.0.0",
+  "unity": "2022.3.0",
+  "description": "Esqueleto + Framework para os projetos Boquinhas.",
+  "keywords": [
+    "package",
+    "unity",
+    "boquinhas",
+    "playmove"
+  ],
+  "dependencies": {}
+}

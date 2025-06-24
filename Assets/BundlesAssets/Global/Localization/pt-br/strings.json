@@ -1,0 +1,686 @@
+[
+  {
+    "TagNome": "About",
+    "Texto": "Sobre"
+  },
+  {
+    "TagNome": "AccessContentManagement",
+    "Texto": "Acessar gerenciador"
+  },
+  {
+    "TagNome": "AccessRestrictedToResponsables",
+    "Texto": "Acesso restrito a responsáveis"
+  },
+  {
+    "TagNome": "Achievements",
+    "Texto": "conquistas"
+  },
+  {
+    "TagNome": "AddWithBackground",
+    "Texto": "Adicionar com fundo"
+  },
+  {
+    "TagNome": "AddWithoutBackground",
+    "Texto": "Adicionar sem fundo"
+  },
+  {
+    "TagNome": "Advanced",
+    "Texto": "Avançado"
+  },
+  {
+    "TagNome": "All",
+    "Texto": "Todos"
+  },
+  {
+    "TagNome": "AllOver",
+    "Texto": "Tudo terminado"
+  },
+  {
+    "TagNome": "AllOverJustPlay",
+    "Texto": "Tudo terminado, agora é só jogar!"
+  },
+  {
+    "TagNome": "AlreadyHasRegisterWithName",
+    "Texto": "Já possui um registro com esse nome"
+  },
+  {
+    "TagNome": "Answer",
+    "Texto": "resposta"
+  },
+  {
+    "TagNome": "ApagarArquivosTransferidos",
+    "Texto": "DESEJA APAGAR TODOS OS ITEMS TRANSFERIDOS DA PLAYTABLE?"
+  },
+  {
+    "TagNome": "ApagarDesenhosDaGaleria",
+    "Texto": "DESEJA APAGAR OS ARQUIVOS COPIADOS DA GALERIA?"
+  },
+  {
+    "TagNome": "ArquivosTransferidosSucesso",
+    "Texto": "TODOS ARQUIVOS FORAM TRANSFERIDOS COM SUCESSO."
+  },
+  {
+    "TagNome": "AtencaoReceberaMenosPontos",
+    "Texto": "ATENÇÃO! VOCÊ RECEBERÁ MENOS PONTOS!"
+  },
+  {
+    "TagNome": "Attention",
+    "Texto": "Atenção"
+  },
+  {
+    "TagNome": "Audio",
+    "Texto": "áudio"
+  },
+  {
+    "TagNome": "Back",
+    "Texto": "Voltar"
+  },
+  {
+    "TagNome": "Basic",
+    "Texto": "Básico"
+  },
+  {
+    "TagNome": "BlockedFiltersMessage",
+    "Texto": "Desculpe! Este registro possui termos bloqueados pelo filtro automático. Revise a escrita e tente novamente."
+  },
+  {
+    "TagNome": "ButtonDesenhar",
+    "Texto": "Desenhar"
+  },
+  {
+    "TagNome": "ButtonPintar",
+    "Texto": "Pintar"
+  },
+  {
+    "TagNome": "Cancel",
+    "Texto": "Cancelar"
+  },
+  {
+    "TagNome": "Class",
+    "Texto": "Turma"
+  },
+  {
+    "TagNome": "ClassAsc",
+    "Texto": "Turmas ↓"
+  },
+  {
+    "TagNome": "Classes",
+    "Texto": "Turmas"
+  },
+  {
+    "TagNome": "Close_Game_After",
+    "Texto": "Seu jogo será fechado em {0} segundos!"
+  },
+  {
+    "TagNome": "Colors",
+    "Texto": "Cores"
+  },
+  {
+    "TagNome": "Confirm",
+    "Texto": "Confirmar"
+  },
+  {
+    "TagNome": "Congratulations",
+    "Texto": "Parabéns"
+  },
+  {
+    "TagNome": "Content",
+    "Texto": "Conteúdo"
+  },
+  {
+    "TagNome": "Continue",
+    "Texto": "Continuar"
+  },
+  {
+    "TagNome": "Create",
+    "Texto": "Criar"
+  },
+  {
+    "TagNome": "Creditos",
+    "Texto": "Créditos"
+  },
+  {
+    "TagNome": "Credits",
+    "Texto": "créditos"
+  },
+  {
+    "TagNome": "Delete",
+    "Texto": "Excluir"
+  },
+  {
+    "TagNome": "DesejaMesmoApagarPlacar",
+    "Texto": "Deseja mesmo apagar o placar desse jogo?"
+  },
+  {
+    "TagNome": "DesejaMesmoSairDaPartida",
+    "Texto": "DESEJA MESMO SAIR DA PARTIDA?"
+  },
+  {
+    "TagNome": "DesejaMesmoVoltar",
+    "Texto": "DESEJA MESMO VOLTAR?"
+  },
+  {
+    "TagNome": "DesejaRealmenteExcluirMessage",
+    "Texto": "Deseja realmente excluir {0}?"
+  },
+  {
+    "TagNome": "DesejaRegistrarPlacar",
+    "Texto": "DESEJA REGISTRAR O RESULTADO NO PLACAR?"
+  },
+  {
+    "TagNome": "DesejaTrocaDeFolha",
+    "Texto": "DESEJA MESMO TROCAR A FOLHA?"
+  },
+  {
+    "TagNome": "DESFAZER",
+    "Texto": "DESFAZER"
+  },
+  {
+    "TagNome": "DoYouReallyWishToEraseThisGamesScoreBoard",
+    "Texto": "Deseja mesmo apagar o placar deste jogo?"
+  },
+  {
+    "TagNome": "DoYouWishToRecordTheResultToThisScoreBoard",
+    "Texto": "Deseja registrar seu resultado no placar"
+  },
+  {
+    "TagNome": "Easy",
+    "Texto": "Fácil"
+  },
+  {
+    "TagNome": "Edit",
+    "Texto": "Editar"
+  },
+  {
+    "TagNome": "EPossivelGuardarEmUmPendrive",
+    "Texto": "É POSSÍVEL GUARDÁ-LO EM UM PENDRIVE TAMBÉM ATRAVÉS DA GALERIA"
+  },
+  {
+    "TagNome": "Erase",
+    "Texto": "Apagar"
+  },
+  {
+    "TagNome": "Error",
+    "Texto": "Erro"
+  },
+  {
+    "TagNome": "EverythingDone",
+    "Texto": "Tudo pronto"
+  },
+  {
+    "TagNome": "Exit",
+    "Texto": "Sair"
+  },
+  {
+    "TagNome": "Expert",
+    "Texto": "Perito"
+  },
+  {
+    "TagNome": "Explore",
+    "Texto": "Explorar"
+  },
+  {
+    "TagNome": "ExtraTurn",
+    "Texto": "Turno Extra"
+  },
+  {
+    "TagNome": "Fechar",
+    "Texto": "Fechar"
+  },
+  {
+    "TagNome": "FileDontFound",
+    "Texto": "Arquivo não encontrado"
+  },
+  {
+    "TagNome": "Gallery",
+    "Texto": "Galeria"
+  },
+  {
+    "TagNome": "Game",
+    "Texto": "Jogo"
+  },
+  {
+    "TagNome": "GameMode",
+    "Texto": "Modo de Jogo"
+  },
+  {
+    "TagNome": "Geral_Pontuacao",
+    "Texto": "Pontuação"
+  },
+  {
+    "TagNome": "GotIt",
+    "Texto": "Entendi"
+  },
+  {
+    "TagNome": "GP_EscolhaCartasPlaces",
+    "Texto": " Escolha uma combinação de Lugares"
+  },
+  {
+    "TagNome": "GUARDAR",
+    "Texto": "GUARDAR"
+  },
+  {
+    "TagNome": "Help",
+    "Texto": "Ajuda"
+  },
+  {
+    "TagNome": "HowToPlay",
+    "Texto": "Como Jogar"
+  },
+  {
+    "TagNome": "IGetIt",
+    "Texto": "Entendi"
+  },
+  {
+    "TagNome": "Information",
+    "Texto": "Informações"
+  },
+  {
+    "TagNome": "InsiraUmPendriveEmSuaPlaytable",
+    "Texto": "INSIRA UM PENDRIVE EM SUA PLAYTABLE..."
+  },
+  {
+    "TagNome": "IWantToPlay",
+    "Texto": "Quero Jogar"
+  },
+  {
+    "TagNome": "LabelDesativado",
+    "Texto": "Desativado"
+  },
+  {
+    "TagNome": "LabelNome",
+    "Texto": "Nome:"
+  },
+  {
+    "TagNome": "Language",
+    "Texto": "Idioma"
+  },
+  {
+    "TagNome": "Loading",
+    "Texto": "Carregando"
+  },
+  {
+    "TagNome": "LoadingWaitAMoment",
+    "Texto": "Carregando, favor aguarde"
+  },
+  {
+    "TagNome": "Medium",
+    "Texto": "Médio"
+  },
+  {
+    "TagNome": "Menu",
+    "Texto": "Menu"
+  },
+  {
+    "TagNome": "Msg_confirmName",
+    "Texto": "Deseja mesmo utilizar este nome?"
+  },
+  {
+    "TagNome": "Msg_existente",
+    "Texto": "Este nome já está sendo utilizado. Continuar assim mesmo?"
+  },
+  {
+    "TagNome": "Music",
+    "Texto": "Música"
+  },
+  {
+    "TagNome": "MusicOff",
+    "Texto": "Música Desligada"
+  },
+  {
+    "TagNome": "MusicOn",
+    "Texto": "Música Ligada"
+  },
+  {
+    "TagNome": "Name",
+    "Texto": "Nome"
+  },
+  {
+    "TagNome": "Names",
+    "Texto": "Nomes"
+  },
+  {
+    "TagNome": "NamesManagerPlayer",
+    "Texto": "Jogador"
+  },
+  {
+    "TagNome": "Narration",
+    "Texto": "Narração"
+  },
+  {
+    "TagNome": "NarrationOn",
+    "Texto": "Narração ligada"
+  },
+  {
+    "TagNome": "NewName",
+    "Texto": "Novo nome"
+  },
+  {
+    "TagNome": "Next",
+    "Texto": "Próximo"
+  },
+  {
+    "TagNome": "NextLevel",
+    "Texto": "próxima fase"
+  },
+  {
+    "TagNome": "No",
+    "Texto": "Não"
+  },
+  {
+    "TagNome": "None",
+    "Texto": "Nenhum"
+  },
+  {
+    "TagNome": "NoneImagesFoundPendrive",
+    "Texto": "Nenhuma imagem encontrada no pendrive."
+  },
+  {
+    "TagNome": "Normal",
+    "Texto": "Normal"
+  },
+  {
+    "TagNome": "Number",
+    "Texto": "número"
+  },
+  {
+    "TagNome": "Objects",
+    "Texto": "Objetos"
+  },
+  {
+    "TagNome": "Off",
+    "Texto": "Desligado"
+  },
+  {
+    "TagNome": "OffFemale",
+    "Texto": "Desligada"
+  },
+  {
+    "TagNome": "On",
+    "Texto": "Ligado"
+  },
+  {
+    "TagNome": "OnFemale",
+    "Texto": "Ligada"
+  },
+  {
+    "TagNome": "OperationCompleted",
+    "Texto": "Operação finalizada"
+  },
+  {
+    "TagNome": "Options",
+    "Texto": "Opções"
+  },
+  {
+    "TagNome": "Page",
+    "Texto": "PÁGINA"
+  },
+  {
+    "TagNome": "Pages",
+    "Texto": "Páginas"
+  },
+  {
+    "TagNome": "Pairs",
+    "Texto": "Pares"
+  },
+  {
+    "TagNome": "PENDRIVE",
+    "Texto": "PENDRIVE"
+  },
+  {
+    "TagNome": "Performance",
+    "Texto": "Desempenho"
+  },
+  {
+    "TagNome": "PhasesSelection",
+    "Texto": "SELEÇÃO DE FASES"
+  },
+  {
+    "TagNome": "Places",
+    "Texto": "Lugares"
+  },
+  {
+    "TagNome": "Play",
+    "Texto": "Jogar"
+  },
+  {
+    "TagNome": "PlayAgain",
+    "Texto": "Jogar Novamente"
+  },
+  {
+    "TagNome": "Player",
+    "Texto": "Jogador"
+  },
+  {
+    "TagNome": "PlayerNotRegistered",
+    "Texto": "Jogador não registrado"
+  },
+  {
+    "TagNome": "Points",
+    "Texto": "Pontos"
+  },
+  {
+    "TagNome": "Position",
+    "Texto": "Posição"
+  },
+  {
+    "TagNome": "Previous",
+    "Texto": "Anterior"
+  },
+  {
+    "TagNome": "Progress",
+    "Texto": "Progresso"
+  },
+  {
+    "TagNome": "quit",
+    "Texto": "Sair"
+  },
+  {
+    "TagNome": "Register",
+    "Texto": "Registrar!"
+  },
+  {
+    "TagNome": "Registered",
+    "Texto": "Registrado"
+  },
+  {
+    "TagNome": "Registering",
+    "Texto": "Registrando"
+  },
+  {
+    "TagNome": "Requests",
+    "Texto": "Pedidos"
+  },
+  {
+    "TagNome": "Result",
+    "Texto": "Resultado"
+  },
+  {
+    "TagNome": "Return",
+    "Texto": "voltar"
+  },
+  {
+    "TagNome": "SavingWaitAMoment",
+    "Texto": "Salvando aguarde um momento"
+  },
+  {
+    "TagNome": "Score",
+    "Texto": "Pontos"
+  },
+  {
+    "TagNome": "Scoreboard",
+    "Texto": "Placar"
+  },
+  {
+    "TagNome": "Scoresboard",
+    "Texto": "Placares"
+  },
+  {
+    "TagNome": "SearchingPendrive",
+    "Texto": "Procurando um pendrive..."
+  },
+  {
+    "TagNome": "SeeYaNextTime",
+    "Texto": "Até a próxima"
+  },
+  {
+    "TagNome": "Select",
+    "Texto": "SELECIONAR"
+  },
+  {
+    "TagNome": "SelectGameModeOnScoreboard",
+    "Texto": "Selecione o modo de jogo que deseja visualizar no placar"
+  },
+  {
+    "TagNome": "SelectYourClass",
+    "Texto": "Selecione sua turma"
+  },
+  {
+    "TagNome": "SelectYoutNameOnTheListOrRegisterANewName",
+    "Texto": "Selecione seu nome na lista ou registre um novo nome"
+  },
+  {
+    "TagNome": "SemTurma",
+    "Texto": "Sem turma"
+  },
+  {
+    "TagNome": "Settings",
+    "Texto": "Configurações"
+  },
+  {
+    "TagNome": "Skip",
+    "Texto": "Pular"
+  },
+  {
+    "TagNome": "SopUptdate",
+    "Texto": "Aguarde um momento!\r\nEstamos atualizando o SOP."
+  },
+  {
+    "TagNome": "SorryButThisNameIsAlreadyBeenUsed",
+    "Texto": "Desculpe mas este nomes já está registrado para esta partida"
+  },
+  {
+    "TagNome": "Sound",
+    "Texto": "Som"
+  },
+  {
+    "TagNome": "SoundOff",
+    "Texto": "Som desligado"
+  },
+  {
+    "TagNome": "SoundOn",
+    "Texto": "Som Ligado"
+  },
+  {
+    "TagNome": "Sounds",
+    "Texto": "Sons"
+  },
+  {
+    "TagNome": "State",
+    "Texto": "Estado"
+  },
+  {
+    "TagNome": "Student",
+    "Texto": "Aluno"
+  },
+  {
+    "TagNome": "Students",
+    "Texto": "Alunos"
+  },
+  {
+    "TagNome": "StudentsWithoutClass",
+    "Texto": "Alunos sem turma"
+  },
+  {
+    "TagNome": "Super",
+    "Texto": "Super"
+  },
+  {
+    "TagNome": "Text_Registro_EscolhaNome",
+    "Texto": " Selecione seu nome   na lista ou registre   um novo nome"
+  },
+  {
+    "TagNome": "Text_Registro_PlacarCheio",
+    "Texto": "O PLACAR DESTE JOGO ESTÁ CHEIO. SOMENTE OS 50 MELHORES RESULTADOS PODEM SER REGISTRADOS."
+  },
+  {
+    "TagNome": "Text_Registro_RegistrarComEsteNome",
+    "Texto": "DESEJA MESMO REGISTRAR O RESULTADO COM ESTE NOME?"
+  },
+  {
+    "TagNome": "Text_Registro_RegistrarResultado",
+    "Texto": "Deseja registrar   seu desempenho no placar?"
+  },
+  {
+    "TagNome": "Text_Registro_ResultadoInferior",
+    "Texto": "O RESULTADO ATUAL É INFERIOR AO JÁ REGISTRADO, E POR ISSO SERÁ DESCARTADO."
+  },
+  {
+    "TagNome": "Text_Team",
+    "Texto": "Equipe"
+  },
+  {
+    "TagNome": "Text_Villain",
+    "Texto": "Vilão"
+  },
+  {
+    "TagNome": "TheScoreBoardHasBeenErased",
+    "Texto": "O placar foi apagado"
+  },
+  {
+    "TagNome": "ThisNameIsAlreadyInUseDoYouWannaToContinue",
+    "Texto": "Este nome já está registrado, deseja continuar?"
+  },
+  {
+    "TagNome": "TimeIsOver",
+    "Texto": "O TEMPO ACABOU!"
+  },
+  {
+    "TagNome": "TimeLabel",
+    "Texto": "Tempo"
+  },
+  {
+    "TagNome": "TimeOver",
+    "Texto": "Que pena o tempo acabou"
+  },
+  {
+    "TagNome": "Transfer",
+    "Texto": "TRANSFERIR"
+  },
+  {
+    "TagNome": "TransferindoArquivosPendrive",
+    "Texto": "TRANSFERINDO ARQUIVOS PARA O PENDRIVE. PORCENTAGEM: {0}%"
+  },
+  {
+    "TagNome": "TurnOff",
+    "Texto": "Desligado"
+  },
+  {
+    "TagNome": "TurnOn",
+    "Texto": "ligado"
+  },
+  {
+    "TagNome": "UmErroOcorreuVerifiquePenDrive",
+    "Texto": "UM ERRO OCORREU, VERIFIQUE O SEU PENDRIVE E TENTE NOVAMENTE."
+  },
+  {
+    "TagNome": "Volume",
+    "Texto": "Volume"
+  },
+  {
+    "TagNome": "WantToClose",
+    "Texto": "Deseja mesmo fechar o jogo?"
+  },
+  {
+    "TagNome": "WhoWillPlay",
+    "Texto": "Quem vai jogar?"
+  },
+  {
+    "TagNome": "WriteTheNameThatYouWannaRegister",
+    "Texto": "Escreva o nome que deseja registrar"
+  },
+  {
+    "TagNome": "Yes",
+    "Texto": "Sim"
+  }
+]

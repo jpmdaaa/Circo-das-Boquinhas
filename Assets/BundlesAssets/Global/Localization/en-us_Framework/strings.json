@@ -1,0 +1,10 @@
+[
+  {
+    "TagNome": "BlockedFiltersMessage",
+    "Texto": "Sorry! This record has terms blocked by the automatic filter. Please review your writing and try again."
+  },
+  {
+    "TagNome": "Attention",
+    "Texto": "Attention"
+  }
+]

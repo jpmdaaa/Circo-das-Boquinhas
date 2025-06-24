@@ -1,0 +1,682 @@
+[
+  {
+    "TagNome": "About",
+    "Texto": "About"
+  },
+  {
+    "TagNome": "AccessRestrictedToResponsables",
+    "Texto": "RESTRICTED ACESS TO PERSONNEL!"
+  },
+  {
+    "TagNome": "Achievements",
+    "Texto": "Achievements"
+  },
+  {
+    "TagNome": "AddWithBackground",
+    "Texto": "Add with background"
+  },
+  {
+    "TagNome": "AddWithoutBackground",
+    "Texto": "Add without background"
+  },
+  {
+    "TagNome": "Advanced",
+    "Texto": "Advanced"
+  },
+  {
+    "TagNome": "All",
+    "Texto": "All"
+  },
+  {
+    "TagNome": "AllOver",
+    "Texto": "All done!"
+  },
+  {
+    "TagNome": "AllOverJustPlay",
+    "Texto": "All done, now you can play!"
+  },
+  {
+    "TagNome": "AlreadyHasRegisterWithName",
+    "Texto": "You already have a register with this name"
+  },
+  {
+    "TagNome": "Answer",
+    "Texto": "answer"
+  },
+  {
+    "TagNome": "ApagarArquivosTransferidos",
+    "Texto": "DO YOU WANT TO DELETE ALL ITEMS TRANSFERRED FROM PLAYTABLE?"
+  },
+  {
+    "TagNome": "ApagarDesenhosDaGaleria",
+    "Texto": "DO YOU WISH TO DELETE THE COPIED GALLERY FILES?"
+  },
+  {
+    "TagNome": "ArquivosTransferidosSucesso",
+    "Texto": "ALL FILES WERE TRANSFERRED WITH SUCCESS."
+  },
+  {
+    "TagNome": "AtencaoReceberaMenosPontos",
+    "Texto": "ATTENTION! YOU WILL RECEIEVE LESS POINTS"
+  },
+  {
+    "TagNome": "Attention",
+    "Texto": "Attention"
+  },
+  {
+    "TagNome": "Audio",
+    "Texto": "audio"
+  },
+  {
+    "TagNome": "Back",
+    "Texto": "Back"
+  },
+  {
+    "TagNome": "Basic",
+    "Texto": "Basic"
+  },
+  {
+    "TagNome": "BlockedFiltersMessage",
+    "Texto": "Sorry! This record has terms blocked by the automatic filter. Please review your writing and try again."
+  },
+  {
+    "TagNome": "ButtonDesenhar",
+    "Texto": "Draw"
+  },
+  {
+    "TagNome": "ButtonPintar",
+    "Texto": "Paint"
+  },
+  {
+    "TagNome": "Cancel",
+    "Texto": "Cancel"
+  },
+  {
+    "TagNome": "Class",
+    "Texto": "Class"
+  },
+  {
+    "TagNome": "ClassAsc",
+    "Texto": "Classes ↓"
+  },
+  {
+    "TagNome": "Classes",
+    "Texto": "Classes"
+  },
+  {
+    "TagNome": "Close_Game_After",
+    "Texto": "Your game will be closed in {0} seconds!"
+  },
+  {
+    "TagNome": "Colors",
+    "Texto": "Colors"
+  },
+  {
+    "TagNome": "Confirm",
+    "Texto": "Confirm"
+  },
+  {
+    "TagNome": "Congratulations",
+    "Texto": "Congratulations"
+  },
+  {
+    "TagNome": "Content",
+    "Texto": "Content"
+  },
+  {
+    "TagNome": "Continue",
+    "Texto": "Continue"
+  },
+  {
+    "TagNome": "Create",
+    "Texto": "Create"
+  },
+  {
+    "TagNome": "Creditos",
+    "Texto": "Credits"
+  },
+  {
+    "TagNome": "Credits",
+    "Texto": "credits"
+  },
+  {
+    "TagNome": "Delete",
+    "Texto": "Delete"
+  },
+  {
+    "TagNome": "DesejaMesmoApagarPlacar",
+    "Texto": "Do you want to delete the score of this game?"
+  },
+  {
+    "TagNome": "DesejaMesmoSairDaPartida",
+    "Texto": "DO YOU WANT TO QUIT THE GAME?"
+  },
+  {
+    "TagNome": "DesejaMesmoVoltar",
+    "Texto": "DO YOU WANT TO RETURN?"
+  },
+  {
+    "TagNome": "DesejaRealmenteExcluirMessage",
+    "Texto": "Do you really want to delete {0}?"
+  },
+  {
+    "TagNome": "DesejaRegistrarPlacar",
+    "Texto": "DO YOU WANT TO REGISTER THE RESULTS ON THE SCOREBOARD?"
+  },
+  {
+    "TagNome": "DesejaTrocaDeFolha",
+    "Texto": "DO YOU WANT TO REPLACE THE SHEET?"
+  },
+  {
+    "TagNome": "DESFAZER",
+    "Texto": "UNDO"
+  },
+  {
+    "TagNome": "DoYouReallyWishToEraseThisGamesScoreBoard",
+    "Texto": "Do you want to delete the score of this game?"
+  },
+  {
+    "TagNome": "DoYouWishToRecordTheResultToThisScoreBoard",
+    "Texto": "Do you want to register your score?"
+  },
+  {
+    "TagNome": "Easy",
+    "Texto": "Easy"
+  },
+  {
+    "TagNome": "Edit",
+    "Texto": "Edit"
+  },
+  {
+    "TagNome": "EPossivelGuardarEmUmPendrive",
+    "Texto": "IT IS POSSIBLE TO SAVE IT ON A USB FLASH DRIVE THROUGH THE GALLERY"
+  },
+  {
+    "TagNome": "Erase",
+    "Texto": "Erase"
+  },
+  {
+    "TagNome": "Error",
+    "Texto": "Error"
+  },
+  {
+    "TagNome": "EverythingDone",
+    "Texto": "All ready"
+  },
+  {
+    "TagNome": "Exit",
+    "Texto": "Exit"
+  },
+  {
+    "TagNome": "Expert",
+    "Texto": "Expert"
+  },
+  {
+    "TagNome": "Explore",
+    "Texto": "Explore"
+  },
+  {
+    "TagNome": "ExtraTurn",
+    "Texto": "Extra Turn"
+  },
+  {
+    "TagNome": "Fechar",
+    "Texto": "Close"
+  },
+  {
+    "TagNome": "FileDontFound",
+    "Texto": "File not found"
+  },
+  {
+    "TagNome": "Gallery",
+    "Texto": "Gallery"
+  },
+  {
+    "TagNome": "Game",
+    "Texto": "Game"
+  },
+  {
+    "TagNome": "GameMode",
+    "Texto": "Game Mode"
+  },
+  {
+    "TagNome": "Geral_Pontuacao",
+    "Texto": "Score"
+  },
+  {
+    "TagNome": "GotIt",
+    "Texto": "Go it"
+  },
+  {
+    "TagNome": "GP_EscolhaCartasPlaces",
+    "Texto": "Choose a combination of Places"
+  },
+  {
+    "TagNome": "GUARDAR",
+    "Texto": "SAVE"
+  },
+  {
+    "TagNome": "Help",
+    "Texto": "Help"
+  },
+  {
+    "TagNome": "HowToPlay",
+    "Texto": "How to play"
+  },
+  {
+    "TagNome": "IGetIt",
+    "Texto": "Got it"
+  },
+  {
+    "TagNome": "Information",
+    "Texto": "Information"
+  },
+  {
+    "TagNome": "InsiraUmPendriveEmSuaPlaytable",
+    "Texto": "INSERT A USB FLASH DRIVE ON YOUR PLAYTABLE ..."
+  },
+  {
+    "TagNome": "IWantToPlay",
+    "Texto": "I want to play"
+  },
+  {
+    "TagNome": "LabelDesativado",
+    "Texto": "Disabled"
+  },
+  {
+    "TagNome": "LabelNome",
+    "Texto": "Name:"
+  },
+  {
+    "TagNome": "Language",
+    "Texto": "Language"
+  },
+  {
+    "TagNome": "Loading",
+    "Texto": "Loading"
+  },
+  {
+    "TagNome": "LoadingWaitAMoment",
+    "Texto": "Loading, please wait"
+  },
+  {
+    "TagNome": "Medium",
+    "Texto": "Medium"
+  },
+  {
+    "TagNome": "Menu",
+    "Texto": "Menu"
+  },
+  {
+    "TagNome": "Msg_confirmName",
+    "Texto": "Do you really wish to use this name?"
+  },
+  {
+    "TagNome": "Msg_existente",
+    "Texto": "This name is already being used. Do you really wish to continue?"
+  },
+  {
+    "TagNome": "Music",
+    "Texto": "Music"
+  },
+  {
+    "TagNome": "MusicOff",
+    "Texto": "Music off"
+  },
+  {
+    "TagNome": "MusicOn",
+    "Texto": "Music on"
+  },
+  {
+    "TagNome": "Name",
+    "Texto": "Name"
+  },
+  {
+    "TagNome": "Names",
+    "Texto": "Names"
+  },
+  {
+    "TagNome": "NamesManagerPlayer",
+    "Texto": "Player"
+  },
+  {
+    "TagNome": "Narration",
+    "Texto": "Narration"
+  },
+  {
+    "TagNome": "NarrationOn",
+    "Texto": "Narration on"
+  },
+  {
+    "TagNome": "NewName",
+    "Texto": "New name"
+  },
+  {
+    "TagNome": "Next",
+    "Texto": "Next"
+  },
+  {
+    "TagNome": "NextLevel",
+    "Texto": "next level"
+  },
+  {
+    "TagNome": "No",
+    "Texto": "No"
+  },
+  {
+    "TagNome": "None",
+    "Texto": "None"
+  },
+  {
+    "TagNome": "NoneImagesFoundPendrive",
+    "Texto": "No images found on the USB flash drive."
+  },
+  {
+    "TagNome": "Normal",
+    "Texto": "Normal"
+  },
+  {
+    "TagNome": "Number",
+    "Texto": "number"
+  },
+  {
+    "TagNome": "Objects",
+    "Texto": "Objects"
+  },
+  {
+    "TagNome": "Off",
+    "Texto": "Off"
+  },
+  {
+    "TagNome": "OffFemale",
+    "Texto": "Off"
+  },
+  {
+    "TagNome": "On",
+    "Texto": "On"
+  },
+  {
+    "TagNome": "OnFemale",
+    "Texto": "On"
+  },
+  {
+    "TagNome": "OperationCompleted",
+    "Texto": "Operation completed"
+  },
+  {
+    "TagNome": "Options",
+    "Texto": "Options"
+  },
+  {
+    "TagNome": "Page",
+    "Texto": "PAGES"
+  },
+  {
+    "TagNome": "Pages",
+    "Texto": "Pages"
+  },
+  {
+    "TagNome": "Pairs",
+    "Texto": "Pairs"
+  },
+  {
+    "TagNome": "PENDRIVE",
+    "Texto": "USB FLASH DRIVE"
+  },
+  {
+    "TagNome": "Performance",
+    "Texto": "Performance"
+  },
+  {
+    "TagNome": "PhasesSelection",
+    "Texto": "PHASE SELECTION"
+  },
+  {
+    "TagNome": "Places",
+    "Texto": "Places"
+  },
+  {
+    "TagNome": "Play",
+    "Texto": "Play"
+  },
+  {
+    "TagNome": "PlayAgain",
+    "Texto": "Play again"
+  },
+  {
+    "TagNome": "Player",
+    "Texto": "Player"
+  },
+  {
+    "TagNome": "PlayerNotRegistered",
+    "Texto": "Unregistered player"
+  },
+  {
+    "TagNome": "Points",
+    "Texto": "Points"
+  },
+  {
+    "TagNome": "Position",
+    "Texto": "Position"
+  },
+  {
+    "TagNome": "Previous",
+    "Texto": "Previous"
+  },
+  {
+    "TagNome": "Progress",
+    "Texto": "Progress"
+  },
+  {
+    "TagNome": "quit",
+    "Texto": "Quit"
+  },
+  {
+    "TagNome": "Register",
+    "Texto": "Register!"
+  },
+  {
+    "TagNome": "Registered",
+    "Texto": "Registered"
+  },
+  {
+    "TagNome": "Registering",
+    "Texto": "Registering"
+  },
+  {
+    "TagNome": "Requests",
+    "Texto": "Requests"
+  },
+  {
+    "TagNome": "Result",
+    "Texto": "Result"
+  },
+  {
+    "TagNome": "Return",
+    "Texto": "back"
+  },
+  {
+    "TagNome": "SavingWaitAMoment",
+    "Texto": "Saving, please wait a moment"
+  },
+  {
+    "TagNome": "Score",
+    "Texto": "Score"
+  },
+  {
+    "TagNome": "Scoreboard",
+    "Texto": "Scoreboard"
+  },
+  {
+    "TagNome": "Scoresboard",
+    "Texto": "Scoreboard"
+  },
+  {
+    "TagNome": "SearchingPendrive",
+    "Texto": "Looking for a USB flash drive ..."
+  },
+  {
+    "TagNome": "SeeYaNextTime",
+    "Texto": "Until next time"
+  },
+  {
+    "TagNome": "Select",
+    "Texto": "SELECT"
+  },
+  {
+    "TagNome": "SelectGameModeOnScoreboard",
+    "Texto": "Select the game mode you \r\nwant to see on the scoreboard"
+  },
+  {
+    "TagNome": "SelectYourClass",
+    "Texto": "Select your class"
+  },
+  {
+    "TagNome": "SelectYoutNameOnTheListOrRegisterANewName",
+    "Texto": "Select your name from the list or enter a new name"
+  },
+  {
+    "TagNome": "SemTurma",
+    "Texto": "No class"
+  },
+  {
+    "TagNome": "Settings",
+    "Texto": "Settings"
+  },
+  {
+    "TagNome": "Skip",
+    "Texto": "Skip"
+  },
+  {
+    "TagNome": "SopUptdate",
+    "Texto": "Wait a moment!\r\nWe are updating the SOP."
+  },
+  {
+    "TagNome": "SorryButThisNameIsAlreadyBeenUsed",
+    "Texto": "Sorry, but this name is already registered for this game."
+  },
+  {
+    "TagNome": "Sound",
+    "Texto": "Sound"
+  },
+  {
+    "TagNome": "SoundOff",
+    "Texto": "Sound off"
+  },
+  {
+    "TagNome": "SoundOn",
+    "Texto": "Sound on"
+  },
+  {
+    "TagNome": "Sounds",
+    "Texto": "Sounds"
+  },
+  {
+    "TagNome": "State",
+    "Texto": "State"
+  },
+  {
+    "TagNome": "Student",
+    "Texto": "Student"
+  },
+  {
+    "TagNome": "Students",
+    "Texto": "Students"
+  },
+  {
+    "TagNome": "StudentsWithoutClass",
+    "Texto": "Students without a class"
+  },
+  {
+    "TagNome": "Super",
+    "Texto": "Super"
+  },
+  {
+    "TagNome": "Text_Registro_EscolhaNome",
+    "Texto": "Select your name on the list or register a new one"
+  },
+  {
+    "TagNome": "Text_Registro_PlacarCheio",
+    "Texto": "THE SCOREBOARD IS FULL. ONLY THE 50 BEST RESULTS CAN BE REGISTERED."
+  },
+  {
+    "TagNome": "Text_Registro_RegistrarComEsteNome",
+    "Texto": "DO WANT TO REGISTER THE RESULT WITH THIS NAME?"
+  },
+  {
+    "TagNome": "Text_Registro_RegistrarResultado",
+    "Texto": "Do you want to record your performance on the scoreboard?"
+  },
+  {
+    "TagNome": "Text_Registro_ResultadoInferior",
+    "Texto": "THE CURRENT RESULT IS LOWER THAN THE REGISTERED, AND WILL BE DISCARDED."
+  },
+  {
+    "TagNome": "Text_Team",
+    "Texto": "Team"
+  },
+  {
+    "TagNome": "Text_Villain",
+    "Texto": "Villain"
+  },
+  {
+    "TagNome": "TheScoreBoardHasBeenErased",
+    "Texto": "The scoreboard has been deleted"
+  },
+  {
+    "TagNome": "ThisNameIsAlreadyInUseDoYouWannaToContinue",
+    "Texto": "This name is already registered, do you want to continue?"
+  },
+  {
+    "TagNome": "TimeIsOver",
+    "Texto": "TIME IS UP!"
+  },
+  {
+    "TagNome": "TimeLabel",
+    "Texto": "Time"
+  },
+  {
+    "TagNome": "TimeOver",
+    "Texto": "Too bad, time is up."
+  },
+  {
+    "TagNome": "Transfer",
+    "Texto": "TRANSFER"
+  },
+  {
+    "TagNome": "TransferindoArquivosPendrive",
+    "Texto": "TRANSFERRING FILES TO PENDRIVE. PERCENTAGE: {0}%"
+  },
+  {
+    "TagNome": "TurnOff",
+    "Texto": "Off"
+  },
+  {
+    "TagNome": "TurnOn",
+    "Texto": "on"
+  },
+  {
+    "TagNome": "UmErroOcorreuVerifiquePenDrive",
+    "Texto": "AN ERROR OCCURRED, CHECK YOUR USB FLASH DRIVE AND TRY AGAIN."
+  },
+  {
+    "TagNome": "Volume",
+    "Texto": "Volume"
+  },
+  {
+    "TagNome": "WantToClose",
+    "Texto": "Do you really want to close the game?"
+  },
+  {
+    "TagNome": "WhoWillPlay",
+    "Texto": "Who is going to play?"
+  },
+  {
+    "TagNome": "WriteTheNameThatYouWannaRegister",
+    "Texto": "Enter the name you want to register"
+  },
+  {
+    "TagNome": "Yes",
+    "Texto": "Yes"
+  }
+]
