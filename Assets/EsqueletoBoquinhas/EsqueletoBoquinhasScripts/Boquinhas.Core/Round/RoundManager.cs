@@ -7,8 +7,7 @@ using Playmove.Avatars.API;
 using Playmove.Metrics.API;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UI;
-
+using Random = UnityEngine.Random;
 
 [System.Serializable]
 public class PontuacaoJogador
@@ -112,7 +111,8 @@ public class RoundManager : MonoBehaviour
     public CanhaoController canhao;
     public List<PontuacaoJogador> pontuacoesJogadores = new List<PontuacaoJogador>();
 
-
+    [Header("Baloes")]
+    public List<BaloesAnimControll> baloes;
 
 
     private void Awake()
@@ -482,6 +482,7 @@ public class RoundManager : MonoBehaviour
         StartCoroutine(EsconderFeedbackAposDelay());
         gameManager.coelhoTransform.position = gameManager.posicaoInicialCoelho;
         gameManager.coelhoAnimator.SetTrigger("erro");
+        TocarBalaoAleatorio();
 
 
         if (pCanRetry)
@@ -573,5 +574,21 @@ public class RoundManager : MonoBehaviour
         errors.player3errors = player3errors;
         DontDestroyOnLoad(errorHolderObj);
     }
-  
+    public void TocarBalaoAleatorio()
+    {
+        // Filtra balões ainda ativos
+        var disponiveis = baloes.FindAll(b => b.gameObject.activeInHierarchy);
+        if (disponiveis.Count == 0) return;
+
+        int index = Random.Range(0, disponiveis.Count);
+        var balao = disponiveis[index];
+
+        balao.PlayAnim();
+        StartCoroutine(DesativarDepois(balao.gameObject, 1.02f)); // tempo da animação
+    }
+    private IEnumerator DesativarDepois(GameObject obj, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        obj.SetActive(false);
+    }
 }

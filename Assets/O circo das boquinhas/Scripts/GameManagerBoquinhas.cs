@@ -268,7 +268,7 @@ public class GameManagerBoquinhas : MonoBehaviour
             Vector3 posicaoSpawn = new Vector3(
                 Random.Range(-3.0f, 3.0f),         // espalha mais horizontalmente
                 5f + Random.Range(0f, 2.5f),       // pequena variação vertical
-                5f                                 // sempre na frente
+                1000f                                 // sempre na frente
             );
 
             GameObject confete = Instantiate(confetePrefab, posicaoSpawn, Quaternion.identity, confeteParent);
@@ -292,9 +292,27 @@ public class GameManagerBoquinhas : MonoBehaviour
                 float torque = Random.Range(-5f, 5f);
                 rb.AddTorque(torque, ForceMode2D.Impulse);
             }
+            StartCoroutine(DestruirQuandoForaDaTela(confete));
+        }
 
+    }
+    private IEnumerator DestruirQuandoForaDaTela(GameObject confete)
+    {
+        yield return new WaitForSeconds(3f); // aguarda confete "voar"
+
+        while (confete != null)
+        {
+            Vector3 viewPos = Camera.main.WorldToViewportPoint(confete.transform.position);
+            bool foraDaTela = viewPos.y < 0 || viewPos.y > 1 || viewPos.x < 0 || viewPos.x > 1;
+
+            if (foraDaTela)
+            {
+                Destroy(confete);
+                yield break;
+            }
+
+            yield return null;
         }
     }
-
 
 }

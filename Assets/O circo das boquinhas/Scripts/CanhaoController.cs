@@ -3,6 +3,8 @@ using System.Collections;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 
 public class CanhaoController : MonoBehaviour
@@ -29,6 +31,8 @@ public class CanhaoController : MonoBehaviour
     public GameObject prefabMira;         
     private GameObject miraInstanciada;
 
+    public GraphicRaycaster raycaster;
+    public EventSystem eventSystem;
 
     private void Start()
     {
@@ -45,9 +49,7 @@ public class CanhaoController : MonoBehaviour
     {
         if (!modoTutorial && Input.GetMouseButtonDown(0) && podeDisparar)
         {
-            Vector3 posicaoMouse = Input.mousePosition;
-            Vector2 posicaoMundo = Camera.main.ScreenToWorldPoint(posicaoMouse);
-            Disparar(posicaoMundo);
+            Disparar(Input.mousePosition);
         }
 
         if(Input.GetKeyDown(KeyCode.R))
@@ -179,12 +181,17 @@ public class CanhaoController : MonoBehaviour
             }
         }
     }
-    private bool VerificarAcerto(Vector2 posicao)
+    private bool VerificarAcerto(Vector2 telaPosicao)
     {
-        RaycastHit2D hit = Physics2D.Raycast(posicao, Vector2.zero);
-        if (hit.collider != null)
+        PointerEventData pointerData = new PointerEventData(eventSystem);
+        pointerData.position = telaPosicao;
+
+        List<RaycastResult> results = new List<RaycastResult>();
+        raycaster.Raycast(pointerData, results);
+
+        foreach (var result in results)
         {
-            GuessItem item = hit.collider.GetComponent<GuessItem>();
+            GuessItem item = result.gameObject.GetComponent<GuessItem>();
             if (item != null)
                 return item.isRespostaCorreta;
         }
