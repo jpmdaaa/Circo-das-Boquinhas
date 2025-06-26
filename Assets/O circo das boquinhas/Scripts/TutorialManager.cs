@@ -160,6 +160,14 @@ public class TutorialManager : MonoBehaviour
         yield return StartCoroutine(EtapasFinaisTutorial());
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            IrParaJogo();
+        }
+            
+    }
     private IEnumerator TutorialLetras()
     {
         text_modo_Letas.SetActive(true);
@@ -411,7 +419,7 @@ public class TutorialManager : MonoBehaviour
         {
 
             Vector3 posicaoSpawn = new Vector3(
-                Random.Range(-5.0f, 5.0f),         // espalha mais horizontalmente
+                Random.Range(-3.5f, 3.5f),         // espalha mais horizontalmente
                 5f + Random.Range(0f, 2.5f),       // pequena variação vertical
                 5f                                 // sempre na frente
             );

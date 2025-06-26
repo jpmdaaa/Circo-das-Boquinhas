@@ -9,6 +9,49 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
+
+[System.Serializable]
+public class PontuacaoJogador
+{
+    public int acertosPrimeiraTentativa = 0; // A
+    public int acertosSegundaTentativa = 0;  // B
+    public int totalDeRodadas = 0;           // N
+
+    // Fórmula do GDD: Porcentagem = (A + 0.5 * B) / N * 100
+    public float CalcularPorcentagem()
+    {
+        if (totalDeRodadas == 0) return 0;
+        return ((acertosPrimeiraTentativa + 0.5f * acertosSegundaTentativa) / totalDeRodadas) * 100f;
+    }
+
+    public int CalcularEstrelas()
+    {
+        float porcentagem = CalcularPorcentagem();
+
+        if (porcentagem == 100f)
+            return 3;
+        else if (porcentagem >= 70f)
+            return 2;
+        else if (porcentagem >= 50f)
+            return 1;
+        else
+            return 0;
+    }
+
+    public void RegistrarAcerto(bool primeiraTentativa)
+    {
+        if (primeiraTentativa)
+            acertosPrimeiraTentativa++;
+        else
+            acertosSegundaTentativa++;
+    }
+
+    public void IncrementarRodada()
+    {
+        totalDeRodadas++;
+    }
+}
+
 [DefaultExecutionOrder(-100)]
 public class RoundManager : MonoBehaviour
 {
@@ -37,6 +80,7 @@ public class RoundManager : MonoBehaviour
     public Transform guessParent;
 
     public GameObject Timer;
+    private TimeBar timebar;
 
     public GameObject btnTryAgain;
     public GameObject btnContinue;
@@ -65,20 +109,17 @@ public class RoundManager : MonoBehaviour
     public AudioClip roundEndNarration;
     public AudioClip turnEndNarration;
     public AudioClip gameEndNarration;
+    public CanhaoController canhao;
+    public List<PontuacaoJogador> pontuacoesJogadores = new List<PontuacaoJogador>();
 
 
-    [Header("Feedbacks")]
-    public List<Sprite> spritesfeed; // lista Sprite de Imagens
-    public List<Sprite> textosFeed;   // lista Sprite de textos
-    public GameObject feedImage; // GO
-    public GameObject feedtext;   // GO
-    public GameObject goFeed;
 
 
     private void Awake()
     {
-        goFeed.SetActive(false); 
         gameManager = (GameManagerBoquinhas)GameObject.FindObjectOfType(typeof(GameManagerBoquinhas));
+        canhao = (CanhaoController)GameObject.FindObjectOfType(typeof(CanhaoController));
+      
 
         if (GlobalDebugs.Instance.AutoMetrics)
         {
@@ -111,13 +152,46 @@ public class RoundManager : MonoBehaviour
     private void Start()
     {
         if (autoMetricsExperimental) MetricsAPI.StartMatch(" ", " ", 0);
+        StartRound();
+
+        if (TimerSystem.Instance.isTimerEnabled)
+        {
+            TimeBar.instance.RestartTimer();
+            TimeBar.instance.StartTimer();
+
+        }
+        timebar = Timer.GetComponent<TimeBar>();
+
+        StartCoroutine(gameManager.IniciarGameplay());
+        
+        pontuacoesJogadores.Clear();
+        for (int i = 0; i < players.Count; i++)
+        {
+            pontuacoesJogadores.Add(new PontuacaoJogador());
+        }
     }
 
+    public void Update()
+    {
+        
+        if (TimerSystem.Instance.isTimerEnabled)
+        {
+          if(timebar.timer<=0)
+            {
+                PlayerGuessedWrong();
+                
+                Debug.Log("ACABOU O TEMPO");
+            }
+        }
+
+    }
     public void StartRound()
     {
         StartCoroutine(RoundStartCoroutine());
         blockerRoxo.SetActive(true);
+   
     }
+
 
     private IEnumerator RoundStartCoroutine()
     {
@@ -136,6 +210,7 @@ public class RoundManager : MonoBehaviour
                 if (autoMetricsExperimental) MetricsAPI.EndMatch(EndReasons.Victory, null);
                 SpawnErrorHolder();
                 //EVENTO DE GAME END
+                EncerrarJogo();
                 GameEndEvent.Invoke();
                 FindObjectOfType<ScenesSystem>().ChangeScene("GameEnd");
                 yield break;
@@ -184,7 +259,47 @@ public class RoundManager : MonoBehaviour
         StartCoroutine(TurnStartCoroutine());
         yield return null;
     }
+    private void EncerrarJogo()
+    {
+        // Criar o objeto que carrega a pontuação entre cenas
+        var holderGO = new GameObject("PontuacaoHolder");
+        var holder = holderGO.AddComponent<PontuacaoHolder>();
 
+        foreach (var p in pontuacoesJogadores)
+        {
+            // Cria uma cópia dos dados
+            var copia = new PontuacaoJogador
+            {
+                acertosPrimeiraTentativa = p.acertosPrimeiraTentativa,
+                acertosSegundaTentativa = p.acertosSegundaTentativa,
+                totalDeRodadas = p.totalDeRodadas
+            };
+            holder.pontuacoes.Add(copia);
+        }
+
+        // Troca para a cena final
+        FindObjectOfType<ScenesSystem>().ChangeScene("GameEnd");
+    }
+
+
+
+    private IEnumerator EsconderFeedbackAposDelay(float delay = 2f)
+    {
+        Debug.Log("entrou esconder");
+     
+        yield return new WaitForSecondsRealtime(delay);
+        gameManager.IniciarGameplay();
+        gameManager.coelhoTransform.position = gameManager.posicaoFinalCoelho;
+        gameManager.coelhoAnimator.SetTrigger("aparecer");
+        gameManager.CriarMapaLetraBoquinha();
+        gameManager.PrepararRodada();
+        confirmAnswerPanel.gameObject.SetActive(false);
+        PassTurn();
+        canhao.podeDisparar = true;
+
+
+
+    }
     private IEnumerator TurnStartCoroutine()
     {
         //print(GetCurrentPlayer());
@@ -343,12 +458,14 @@ public class RoundManager : MonoBehaviour
         rightAnswerAchieved = true;
         if (autoMetricsExperimental) MetricsAPI.EndEvent(AvatarAPI.PlayersIdsFromSlot(activePlayerForMetrics), "Acertou.", "Acertou.");
 
-
-        feedImage.GetComponent<SpriteRenderer>().sprite = spritesfeed[0];
-        feedtext.GetComponent<SpriteRenderer>().sprite = textosFeed[0];
+        gameManager.coelhoTransform.position = gameManager.posicaoFinalCoelho;
+        gameManager.coelhoAnimator.SetTrigger("acerto");
         gameManager.DispararConfetes();
+        pontuacoesJogadores[_activePlayerNumber].RegistrarAcerto(true);
+        pontuacoesJogadores[_activePlayerNumber].IncrementarRodada();
 
-        goFeed.SetActive(true);
+        StartCoroutine(EsconderFeedbackAposDelay());
+
         //EVENTO CONTINUAR PÓS ACERTO
         continueAfterRightAnswerEvent.Invoke();
 
@@ -361,15 +478,16 @@ public class RoundManager : MonoBehaviour
         if (autoMetricsExperimental) MetricsAPI.EndEvent(AvatarAPI.PlayersIdsFromSlot(activePlayerForMetrics), "Acertou.", "Errou.");
 
         //pCanRetry = false;
-        feedImage.GetComponent<SpriteRenderer>().sprite = spritesfeed[1];
-        goFeed.SetActive(true);
+       
+        StartCoroutine(EsconderFeedbackAposDelay());
+        gameManager.coelhoTransform.position = gameManager.posicaoInicialCoelho;
+        gameManager.coelhoAnimator.SetTrigger("erro");
 
 
         if (pCanRetry)
         {
             //EVENTO TENTAR NOVAMENTE
 
-            feedtext.GetComponent<SpriteRenderer>().sprite = textosFeed[2];
            
             TryAgainEvent.Invoke();
             if (TimerSystem.Instance.isTimerEnabled)
@@ -380,8 +498,11 @@ public class RoundManager : MonoBehaviour
         }
         else
         {
-            feedtext.GetComponent<SpriteRenderer>().sprite = textosFeed[1];
+            
+
             PlayerGuessedWrongSecondTime();
+            pontuacoesJogadores[_activePlayerNumber].IncrementarRodada();
+
         }
     }
 

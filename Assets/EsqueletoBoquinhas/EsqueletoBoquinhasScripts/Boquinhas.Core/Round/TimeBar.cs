@@ -27,7 +27,7 @@ public class TimeBar : MonoBehaviour
     private AudioClip timeAlmostOver;
 
     private bool timeAlmostOverPlayed;
-    private float timer = 10f;
+    public float timer = 10f;
     private bool timeWarningPlayed;
     private RoundManager _roundManager;
     private bool infiniteRound = false;

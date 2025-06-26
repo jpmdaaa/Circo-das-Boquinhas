@@ -19,9 +19,9 @@ public class GameManagerBoquinhas : MonoBehaviour
 
     [Header("Coelho")]
     public GameObject coelho;
-    private Animator coelhoAnimator;
+    public Animator coelhoAnimator;
     public GameObject imageFalaCoelho;
-    private Transform coelhoTransform;
+    public Transform coelhoTransform;
     public Vector3 posicaoInicialCoelho = new Vector3(5f, -1.31f, 1.957962f);
     public Vector3 posicaoFinalCoelho = new Vector3(4.731943f, -0.6551708f, 1.957962f);
 
@@ -47,6 +47,49 @@ public class GameManagerBoquinhas : MonoBehaviour
     public int quantidadeConfetes = 30;
 
     private Dictionary<Sprite, Sprite> mapaLetraParaBoquinha = new();
+    Dictionary<string, string> nomeLetraParaBoquinha = new Dictionary<string, string>
+{
+    {"A", "A"},
+    {"ASA", "Z-ASA"},
+    {"B", "B"},
+    {"C", "C-QU"},
+    {"CE", "S-CE-CI-SC"},
+    {"CI", "S-CE-CI-SC"},
+    {"CH", "X-CH"},
+    {"D", "D"},
+    {"E", "É"},
+    {"F", "F"},
+    {"G", "G-GU"},
+    {"GE", "J-GE-GI"},
+    {"GI", "J-GE-GI"},
+    {"GU", "G-GU"},
+    {"H", "Z-ASA"}, // ou o que for correto
+    {"I", "I"},
+    {"J", "J-GE-GI"},
+    {"L", "L"},
+    {"LH", "LH"},
+    {"M", "M"},
+    {"N", "N"},
+    {"NH", "NH"},
+    {"O", "Ó"},
+    {"P", "P"},
+    {"Q", "C-QU"},
+    {"R", "R-RR"},
+    {"RR", "R-RR"},
+    {"S", "S-CE-CI-SC"},
+    {"SS", "S-CE-CI-SC"},
+    {"T", "T"},
+    {"U", "U"},
+    {"V", "V"},
+    {"X", "X-CH"},
+    {"Z", "Z-ASA"},
+    {"Ã", "Ã"},
+    {"Ç", "S-CE-CI-SC"},
+    {"É", "É"},
+    {"Ó", "Ó"},
+    {"Ô", "Ô"}
+};
+
 
     private void Start()
     {
@@ -63,16 +106,16 @@ public class GameManagerBoquinhas : MonoBehaviour
         }
 
         CriarMapaLetraBoquinha();
-       
+        PrepararRodada();
         // Inicia o fluxo do jogo aqui
-        StartCoroutine(IniciarGameplay());
+
     }
 
-    private IEnumerator IniciarGameplay()
+    public IEnumerator IniciarGameplay()
     {
-
         // TODO: Exibir desafio específico conforme modo
-        PrepararRodada();
+
+
 
         yield return new WaitForSeconds(2.0f);
 
@@ -86,17 +129,13 @@ public class GameManagerBoquinhas : MonoBehaviour
         imageFalaCoelho.SetActive(true);
         GO_boquinhaCorreta.SetActive(true);
 
-        if (TimerSystem.Instance.isTimerEnabled)
-        {
-            TimeBar.instance.RestartTimer();
-            TimeBar.instance.StartTimer();
-        }
-
+      
+        canhao.podeDisparar = true;
         yield return new WaitForSeconds(1.5f);
 
     }
 
-    private void PrepararRodada()
+    public void PrepararRodada()
     {
         List<Sprite> sorteados;
 
@@ -127,7 +166,7 @@ public class GameManagerBoquinhas : MonoBehaviour
                 break;
         }
     }
-    private void AtualizarIconesPainel(List<Sprite> sprites, int indexCorreto)
+    public void AtualizarIconesPainel(List<Sprite> sprites, int indexCorreto)
     {
         // Para modos Boquinhas e Letras (índice único passado)
         for (int i = 0; i < 3; i++)
@@ -192,21 +231,31 @@ public class GameManagerBoquinhas : MonoBehaviour
         }
         return copia.GetRange(0, Mathf.Min(quantidade, copia.Count));
     }
-
-    private void CriarMapaLetraBoquinha()
+    public void CriarMapaLetraBoquinha()
     {
         mapaLetraParaBoquinha.Clear();
-        Sprite letraA = letrasDisponiveis.Find(l => l.name == "Letra_A");
-        Sprite letraB = letrasDisponiveis.Find(l => l.name == "Letra_B");
-        Sprite letraC = letrasDisponiveis.Find(l => l.name == "Letra_C");
 
-        Sprite bocaA = boquinhasDisponiveis.Find(b => b.name == "Boca_A");
-        Sprite bocaB = boquinhasDisponiveis.Find(b => b.name == "Boca_B");
-        Sprite bocaC = boquinhasDisponiveis.Find(b => b.name == "Boca_C");
+        foreach (Sprite letra in letrasDisponiveis)
+        {
+            string nomeLetra = letra.name;
 
-        if (letraA && bocaA) mapaLetraParaBoquinha[letraA] = bocaA;
-        if (letraB && bocaB) mapaLetraParaBoquinha[letraB] = bocaB;
-        if (letraC && bocaC) mapaLetraParaBoquinha[letraC] = bocaC;
+            if (nomeLetraParaBoquinha.TryGetValue(nomeLetra, out string nomeBoquinha))
+            {
+                Sprite boquinha = boquinhasDisponiveis.Find(b => b.name == nomeBoquinha);
+                if (boquinha != null)
+                {
+                    mapaLetraParaBoquinha[letra] = boquinha;
+                }
+                else
+                {
+                    Debug.LogWarning($"Boquinha '{nomeBoquinha}' não encontrada para a letra '{nomeLetra}'");
+                }
+            }
+            else
+            {
+                Debug.LogWarning($"Letra '{nomeLetra}' não está mapeada para nenhuma boquinha.");
+            }
+        }
     }
 
 
@@ -217,7 +266,7 @@ public class GameManagerBoquinhas : MonoBehaviour
         {
 
             Vector3 posicaoSpawn = new Vector3(
-                Random.Range(-5.0f, 5.0f),         // espalha mais horizontalmente
+                Random.Range(-3.0f, 3.0f),         // espalha mais horizontalmente
                 5f + Random.Range(0f, 2.5f),       // pequena variação vertical
                 5f                                 // sempre na frente
             );

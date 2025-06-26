@@ -1755,7 +1755,9 @@ MonoBehaviour:
   - {fileID: 1310756840}
   - {fileID: 319442137}
   coelho: {fileID: 1929219099}
+  coelhoAnimator: {fileID: 0}
   imageFalaCoelho: {fileID: 527938472}
+  coelhoTransform: {fileID: 0}
   posicaoInicialCoelho: {x: 5, y: -1.31, z: 1.957962}
   posicaoFinalCoelho: {x: 4.731943, y: -0.6551708, z: 1.957962}
   GO_boquinhaCorreta: {fileID: 116951127}
@@ -2917,7 +2919,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &790814101
 Transform:
   m_ObjectHideFlags: 0
@@ -3740,6 +3742,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1813644876678289500, guid: b5178590c669c3b40a26285306cb9867,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2027382227392920254, guid: b5178590c669c3b40a26285306cb9867,
         type: 3}
       propertyPath: m_Name
@@ -3907,9 +3914,19 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 6116167050763540223, guid: b5178590c669c3b40a26285306cb9867,
         type: 3}
+      propertyPath: GameplayStartEvent.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6116167050763540223, guid: b5178590c669c3b40a26285306cb9867,
+        type: 3}
       propertyPath: TimerEndEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 197385843}
+    - target: {fileID: 6116167050763540223, guid: b5178590c669c3b40a26285306cb9867,
+        type: 3}
+      propertyPath: GameStartAfertTutorialEvent.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6116167050763540223, guid: b5178590c669c3b40a26285306cb9867,
         type: 3}
       propertyPath: StartTimerEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -3922,9 +3939,24 @@ PrefabInstance:
       objectReference: {fileID: 816792780}
     - target: {fileID: 6116167050763540223, guid: b5178590c669c3b40a26285306cb9867,
         type: 3}
+      propertyPath: GameplayStartEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 455829502}
+    - target: {fileID: 6116167050763540223, guid: b5178590c669c3b40a26285306cb9867,
+        type: 3}
+      propertyPath: GameplayStartEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6116167050763540223, guid: b5178590c669c3b40a26285306cb9867,
+        type: 3}
       propertyPath: ContinueAfterSecondWrongAnswer.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 197385843}
+    - target: {fileID: 6116167050763540223, guid: b5178590c669c3b40a26285306cb9867,
+        type: 3}
+      propertyPath: GameStartAfertTutorialEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6116167050763540223, guid: b5178590c669c3b40a26285306cb9867,
         type: 3}
       propertyPath: StartTimerEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
@@ -3958,7 +3990,7 @@ PrefabInstance:
     - target: {fileID: 6424052103320061637, guid: b5178590c669c3b40a26285306cb9867,
         type: 3}
       propertyPath: m_RenderMode
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6641134159448019694, guid: b5178590c669c3b40a26285306cb9867,
         type: 3}
@@ -4003,7 +4035,12 @@ PrefabInstance:
     - target: {fileID: 6969840234946866374, guid: b5178590c669c3b40a26285306cb9867,
         type: 3}
       propertyPath: m_RenderMode
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6969840234946866374, guid: b5178590c669c3b40a26285306cb9867,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 8474663042003422351, guid: b5178590c669c3b40a26285306cb9867,
         type: 3}
@@ -4329,7 +4366,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 1110780929}
-  podeDisparar: 1
+  podeDisparar: 0
   modoTutorial: 0
   doisDisparos: 0
   acertou: 0

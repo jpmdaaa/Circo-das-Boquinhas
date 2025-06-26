@@ -74,27 +74,42 @@ public class CanhaoController : MonoBehaviour
         // Instanciar efeito
         Vector3 posicaoZcorrigida = new Vector3(posicaoAlvo.x, posicaoAlvo.y, 5f);
         GameObject prefab = acertou ? prefabTiroCerto : prefabTiroErrado;
-        Instantiate(prefab, posicaoZcorrigida, Quaternion.identity);
+        GameObject tiroInstanciado = Instantiate(prefab, posicaoZcorrigida, Quaternion.identity);
+      
 
 
         if(acertou)
         {
+            roundManager.CallAnswer(true);
             roundManager.PlayerGuessedRight();
+            StartCoroutine(DestruirTiroDepoisDoFeedback(tiroInstanciado)); 
             Debug.Log("Acertou");
+          
         }
 
         else 
         {
+            roundManager.CallAnswer(false);
             roundManager.PlayerGuessedWrong();
+            StartCoroutine(DestruirTiroDepoisDoFeedback(tiroInstanciado));
             Debug.Log("Errou");
+           
         }
 
         if(doisDisparos)
         {
             podeDisparar = true;
+            roundManager.CallAnswer(false);
+            roundManager.PlayerGuessedWrongSecondTime();
+            StartCoroutine(DestruirTiroDepoisDoFeedback(tiroInstanciado));
             doisDisparos = false;
         }
 
+    }
+    private IEnumerator DestruirTiroDepoisDoFeedback(GameObject tiro)
+    {
+        yield return new WaitForSeconds(1f); // tempo de feedback na tela
+        Destroy(tiro);
     }
     private void RotacionarCanhao(Vector2 posicaoAlvo)
     {

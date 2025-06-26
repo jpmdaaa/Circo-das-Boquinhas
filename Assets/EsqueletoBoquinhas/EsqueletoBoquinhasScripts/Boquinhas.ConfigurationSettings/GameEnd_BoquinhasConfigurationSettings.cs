@@ -37,34 +37,44 @@ namespace Boquinhas.ConfigurationSettings
 
         private IEnumerator IShowStars()
         {
-            var errorHolder = FindObjectOfType<ErrorHolder>();
+            var holder = FindObjectOfType<PontuacaoHolder>();
             yield return new WaitForSeconds(0.5f);
 
-            if (slot0.GetComponent<PlayerIcon>().avatar.activeSelf)
+            if (holder != null)
             {
-                slot0.GetComponent<PlayerIcon>().ShowStars(errorHolder.player0errors);
-                yield return new WaitForSeconds(2f);
-            }
+                var pontuacoes = holder.pontuacoes;
 
-            if (slot1.GetComponent<PlayerIcon>().avatar.activeSelf)
-            {
-                slot1.GetComponent<PlayerIcon>().ShowStars(errorHolder.player1errors);
-                yield return new WaitForSeconds(2f);
-            }
+                if (slot0.GetComponent<PlayerIcon>().avatar.activeSelf)
+                {
+                    int estrelas = pontuacoes[0].CalcularEstrelas();
+                    slot0.GetComponent<PlayerIcon>().ShowStars(estrelas);
+                    yield return new WaitForSeconds(2f);
+                }
 
-            if (slot2.GetComponent<PlayerIcon>().avatar.activeSelf)
-            {
-                slot2.GetComponent<PlayerIcon>().ShowStars(errorHolder.player2errors);
-                yield return new WaitForSeconds(2f);
-            }
+                if (slot1.GetComponent<PlayerIcon>().avatar.activeSelf)
+                {
+                    int estrelas = pontuacoes[1].CalcularEstrelas();
+                    slot1.GetComponent<PlayerIcon>().ShowStars(estrelas);
+                    yield return new WaitForSeconds(2f);
+                }
 
-            if (slot3.GetComponent<PlayerIcon>().avatar.activeSelf)
-            {
-                slot3.GetComponent<PlayerIcon>().ShowStars(errorHolder.player3errors);
-                yield return new WaitForSeconds(2f);
-            }
+                if (slot2.GetComponent<PlayerIcon>().avatar.activeSelf)
+                {
+                    int estrelas = pontuacoes[2].CalcularEstrelas();
+                    slot2.GetComponent<PlayerIcon>().ShowStars(estrelas);
+                    yield return new WaitForSeconds(2f);
+                }
 
-            Destroy(errorHolder.gameObject);
+                if (slot3.GetComponent<PlayerIcon>().avatar.activeSelf)
+                {
+                    int estrelas = pontuacoes[3].CalcularEstrelas();
+                    slot3.GetComponent<PlayerIcon>().ShowStars(estrelas);
+                    yield return new WaitForSeconds(2f);
+                }
+
+                Destroy(holder.gameObject); // limpa da memória
+            }
         }
+
     }
 }
