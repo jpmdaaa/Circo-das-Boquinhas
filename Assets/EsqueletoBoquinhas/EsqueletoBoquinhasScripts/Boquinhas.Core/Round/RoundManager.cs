@@ -330,7 +330,7 @@ public class RoundManager : MonoBehaviour
         gameManager.PrepararRodada();
         confirmAnswerPanel.gameObject.SetActive(false);
         PassTurn();
-        canhao.podeDisparar = true;
+        
 
 
 
@@ -404,6 +404,7 @@ public class RoundManager : MonoBehaviour
 
         //EVENTO DE GAMEPLAY LIBERADA
         GameplayStartEvent.Invoke();
+        canhao.podeDisparar = true;
 
         if (backCanvas != null) backCanvas.SetActive(true);
 
@@ -420,6 +421,10 @@ public class RoundManager : MonoBehaviour
         if (TimerSystem.Instance.isTimerEnabled) Timer.SetActive(false);
         //playerGuessPanel.SetActive(false);
         rightAnswerAchieved = false;
+
+        yield return new WaitForSecondsRealtime(2f); // Anima��o de feedback positivo da carta devido � acerto
+
+      
 
         PassTurn();
     }
