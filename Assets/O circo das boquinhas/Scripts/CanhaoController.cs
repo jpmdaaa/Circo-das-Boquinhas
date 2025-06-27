@@ -33,11 +33,16 @@ public class CanhaoController : MonoBehaviour
 
     public GraphicRaycaster raycaster;
     public EventSystem eventSystem;
+    private GameBack btnback;
+
+    Ray ray;
+    RaycastHit hit;
 
     private void Start()
     {
         animator = GetComponent<Animator>();
-        if(SceneManager.GetActiveScene().name== "RoundManager_Sample")
+        btnback = (GameBack)GameObject.FindObjectOfType(typeof(GameBack));
+        if (SceneManager.GetActiveScene().name== "RoundManager_Sample")
         {
             roundManager = (RoundManager)GameObject.FindObjectOfType(typeof(RoundManager));
         }
@@ -47,9 +52,19 @@ public class CanhaoController : MonoBehaviour
 
     private void Update()
     {
-        if (!modoTutorial && Input.GetMouseButtonDown(0) && podeDisparar)
+        ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(ray, out hit))
         {
-            Disparar(Input.mousePosition);
+            print(hit.collider.name);
+        }
+
+        if (!modoTutorial && Input.GetMouseButtonDown(0) && podeDisparar )
+        {
+            if(!btnback.activate)
+            {
+                Disparar(Input.mousePosition);
+            }
+           
         }
 
         if(Input.GetKeyDown(KeyCode.R))
@@ -57,7 +72,6 @@ public class CanhaoController : MonoBehaviour
             SceneManager.LoadScene("Tutorial");
         }
     }
-
     public void AtivarMira()
     {
         podeDisparar = true;
@@ -77,7 +91,7 @@ public class CanhaoController : MonoBehaviour
         Vector3 posicaoZcorrigida = new Vector3(posicaoAlvo.x, posicaoAlvo.y, 5f);
         GameObject prefab = acertou ? prefabTiroCerto : prefabTiroErrado;
         GameObject tiroInstanciado = Instantiate(prefab, posicaoZcorrigida, Quaternion.identity);
-      
+        
 
 
         if(acertou)
@@ -106,6 +120,7 @@ public class CanhaoController : MonoBehaviour
             StartCoroutine(DestruirTiroDepoisDoFeedback(tiroInstanciado));
             doisDisparos = false;
         }
+        animator.Play("CanhaoIdle", 0);
 
     }
     private IEnumerator DestruirTiroDepoisDoFeedback(GameObject tiro)
@@ -115,32 +130,35 @@ public class CanhaoController : MonoBehaviour
     }
     private void RotacionarCanhao(Vector2 posicaoAlvo)
     {
-        animator.ResetTrigger("Disparar_Direita");
-        animator.ResetTrigger("Disparar_Esquerda");
-        animator.ResetTrigger("Disparar_Frente");
+        // Converte a posição do mouse de tela para mundo
+        Vector2 posMundo = Camera.main.ScreenToWorldPoint(posicaoAlvo);
 
-        animator.Play("CanhaoIdle", 0);
+        // Calcula a direção a partir da posição do canhão
+        Vector2 direcao = (posMundo - (Vector2)transform.position).normalized;
 
-        Vector2 direcao = (posicaoAlvo - (Vector2)transform.position).normalized;
         float angulo = Mathf.Atan2(direcao.y, direcao.x) * Mathf.Rad2Deg;
-
         string trigger = DirecaoParaAnimacao(angulo);
+
+    
         animator.SetTrigger(trigger);
     }
-
     private string DirecaoParaAnimacao(float angulo)
     {
-        float deltaX = Mathf.Cos(angulo * Mathf.Deg2Rad);
+        // Normalize o ângulo para o intervalo [-180, 180]
+        if (angulo > 180f) angulo -= 360f;
 
-        if (Mathf.Abs(deltaX) < 0.1f)
-            return "Disparar_Frente";
-        else if (deltaX > 0)
+        // Direita: -45° a +45°
+        // Frente: +45° a +135°
+        // Esquerda: >= +135° ou <= -135°
+        if (angulo  <= 80)
             return "Disparar_Direita";
-        else
+        else if (angulo >= 111f )
             return "Disparar_Esquerda";
+        else
+            return "Disparar_Frente";
     }
 
-  
+
     public void DisparoTutorial()
     {
         Debug.Log("Disparei canhao tutorial");

@@ -1,6 +1,10 @@
 using System.Collections;
+using System.Collections.Generic;
 using Boquinhas.Core;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+
 
 namespace Boquinhas.ConfigurationSettings
 {
@@ -14,8 +18,14 @@ namespace Boquinhas.ConfigurationSettings
         public GameObject slot1;
         public GameObject slot2;
         public GameObject slot3;
-
+        public List<GameObject> confetes;
+        public TMP_Text text;
         private BoquinhasConfigurationSettings _boquinhasConfigurationSettings;
+
+        [Header("Áudios")]
+        public AudioClip audioShowBravo;
+        public AudioClip audioShowFracassou;
+        public AudioSource audioSource;
 
         private void Awake()
         {
@@ -31,9 +41,72 @@ namespace Boquinhas.ConfigurationSettings
 
         private void Start()
         {
-            //show the stars for each player
-            StartCoroutine(IShowStars());
+            var holder = FindObjectOfType<PontuacaoHolder>();
+
+            if (holder != null)
+            {
+                var pontuacoes = holder.pontuacoes;
+                int jogadoresValidos = 0;
+                int jogadoresBons = 0;
+
+                foreach (var p in pontuacoes)
+                {
+                    if (p.totalDeRodadas > 0)
+                    {
+                        jogadoresValidos++;
+                        if (p.CalcularPorcentagem() >= 50f)
+                            jogadoresBons++;
+                    }
+                }
+
+                bool sucesso = jogadoresBons >= Mathf.CeilToInt(jogadoresValidos / 2f);
+
+                if (sucesso)
+                {
+                    ShowFeedbackPositivo();
+                }
+                else
+                {
+                    ShowFeedbackNegativo();
+                }
+
+                StartCoroutine(IShowStars());
+            }
         }
+
+
+        private void ShowFeedbackPositivo()
+        {
+            text.text = "BRAVO!! QUE SHOW!!";
+
+            foreach (var confete in confetes)
+                confete.SetActive(true);
+
+            if (audioSource != null && audioShowBravo != null)
+            {
+                audioSource.clip = audioShowBravo;
+                audioSource.Play();
+            }
+
+            AudioSystem.Instance.PlaySilenceableNarration(audioShowBravo);
+        }
+
+        private void ShowFeedbackNegativo()
+        {
+            text.text = "O SHOW FRACASSOU";
+
+            foreach (var confete in confetes)
+                confete.SetActive(false); // ou uma animação triste, se quiser
+
+            if (audioSource != null && audioShowFracassou != null)
+            {
+                audioSource.clip = audioShowFracassou;
+                audioSource.Play();
+            }
+
+            AudioSystem.Instance.PlaySilenceableNarration(audioShowFracassou);
+        }
+
 
         private IEnumerator IShowStars()
         {

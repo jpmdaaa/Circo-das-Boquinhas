@@ -157,9 +157,17 @@ public class TimeBar : MonoBehaviour
         }
 
         instance = this;
-        RestartTimer();
+        //RestartTimer();
     }
 
+    public void SetCustomTime(float seconds)
+    {
+        initialTime = seconds;
+        timer = initialTime;
+        timeText.text = Mathf.CeilToInt(initialTime).ToString();
+        filledBarImage.fillAmount = 1f;
+        filledBarImage.color = Color.green;
+    }
     private void OnDisable()
     {
         if (!TimerSystem.Instance.isTimerEnabled) return;

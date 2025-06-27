@@ -152,15 +152,16 @@ public class RoundManager : MonoBehaviour
     private void Start()
     {
         if (autoMetricsExperimental) MetricsAPI.StartMatch(" ", " ", 0);
-        StartRound();
-
+        
+        timebar = Timer.GetComponent<TimeBar>();
         if (TimerSystem.Instance.isTimerEnabled)
         {
-            TimeBar.instance.RestartTimer();
-            TimeBar.instance.StartTimer();
+            timebar.RestartTimer();
+            timebar.StartTimer();
 
         }
-        timebar = Timer.GetComponent<TimeBar>();
+  
+        StartRound();
 
         StartCoroutine(gameManager.IniciarGameplay());
         
@@ -176,25 +177,59 @@ public class RoundManager : MonoBehaviour
         
         if (TimerSystem.Instance.isTimerEnabled)
         {
-          if(timebar.timer<=0)
+          if(timebar!=null)
+          {
+                if (timebar.timer <= 0)
+                {
+                    PlayerGuessedWrong();
+
+                    Debug.Log("ACABOU O TEMPO");
+                }
+          }
+            else
             {
-                PlayerGuessedWrong();
                 
-                Debug.Log("ACABOU O TEMPO");
+                float novoTempo = CalcularTempoDaRodada();
+                TimeBar.instance.SetCustomTime(novoTempo);  // Garante tempo correto
+                TimeBar.instance.RestartTimer();            // Reset visual e numérico
+                TimeBar.instance.StartTimer();              // Inicia de fato o cronômetro
+                Timer.SetActive(true);
+                TimeBar.instance.UpdateRounds(roundNumber);
+                timebar = (TimeBar)GameObject.FindObjectOfType(typeof(TimeBar));
             }
+        
         }
 
     }
     public void StartRound()
     {
+        timebar.SetCustomTime(CalcularTempoDaRodada());
         StartCoroutine(RoundStartCoroutine());
         blockerRoxo.SetActive(true);
    
     }
 
+    public float CalcularTempoDaRodada()
+    {
+        int jogadores = players.Count;
+
+        if (jogadores <= 2)
+        {
+            if (roundNumber <= 2) return 50f;
+            else if (roundNumber <= 4) return 40f;
+            else return 35f;
+        }
+        else // 3 ou 4 jogadores
+        {
+            if (roundNumber <= 2) return 50f;
+            else return 35f;
+        }
+    }
+
 
     private IEnumerator RoundStartCoroutine()
     {
+       
         if (roundNumber > 0)
         {
             //EVENTO DE ROUND END
@@ -302,6 +337,8 @@ public class RoundManager : MonoBehaviour
     }
     private IEnumerator TurnStartCoroutine()
     {
+
+      
         //print(GetCurrentPlayer());
 
         if (!players[_activePlayerNumber].gameObject
@@ -342,8 +379,12 @@ public class RoundManager : MonoBehaviour
         //playerGuessPanel.SetActive(true);
         if (TimerSystem.Instance.isTimerEnabled)
         {
+            float novoTempo = CalcularTempoDaRodada();
+            timebar.SetCustomTime(novoTempo);  // Garante tempo correto
+            timebar.RestartTimer();            // Reset visual e numérico
+            timebar.StartTimer();              // Inicia de fato o cronômetro
             Timer.SetActive(true);
-            TimeBar.instance.UpdateRounds(roundNumber);
+            timebar.UpdateRounds(roundNumber);
         }
         else
         {
@@ -412,6 +453,7 @@ public class RoundManager : MonoBehaviour
 
     private void PassTurn()
     {
+        timebar.SetCustomTime(CalcularTempoDaRodada());
         //players[activePlayerNumber].transform.SetParent(playerPanel.transform);
         if (players[_activePlayerNumber].gameObject.activeSelf) players[_activePlayerNumber].EnterGameplay(false);
         if (_activePlayerNumber == players.Count - 1) // �ltimo jogador, terminar round
@@ -493,8 +535,8 @@ public class RoundManager : MonoBehaviour
             TryAgainEvent.Invoke();
             if (TimerSystem.Instance.isTimerEnabled)
             {
-                TimeBar.instance.RestartTimer();
-                TimeBar.instance.StartTimer();
+                timebar.RestartTimer();
+                timebar.StartTimer();
             }
         }
         else
@@ -523,7 +565,7 @@ public class RoundManager : MonoBehaviour
         else
         {
             StartTimerEvent.Invoke();
-            TimeBar.instance.StartTimer();
+            timebar.StartTimer();
         }
     }
     
