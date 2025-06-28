@@ -7,15 +7,21 @@ using UnityEngine.SceneManagement;
 
 public class GameManagerBoquinhas : MonoBehaviour
 {
-
+    [Header("Game Mode")]
     public DifficultyLevels modoAtual;
     private DifficultySaveManager difficulty;
     private RoundManager roundManager;
+    private int numeroJogadores;
+    private int numeroDaRodada => roundManager != null ? roundManager.GetCurrentRoundNumber() : 1;
 
     [Header("UI")]
-    public GameObject painelFiguras;
-    public GameObject painelBocasLetras;
-    public List<Image> iconesPainelCentral;
+
+    public List<Image> iconesPainel_6;
+    public List<Image> iconesPainel_8;
+    public List<Image> iconesPainel_12;
+    public GameObject figuras6GO;
+    public GameObject figuras8GO;
+    public GameObject figuras12GO;
 
     [Header("Coelho")]
     public GameObject coelho;
@@ -46,8 +52,18 @@ public class GameManagerBoquinhas : MonoBehaviour
     public Transform confeteParent;     // container opcional para manter organizado
     public int quantidadeConfetes = 30;
 
+    [Header("Áudios")]
+    public List<AudioClip> audiosBoquinhas;
+    public AudioSource audioSource;
+    private AudioClip audioBoquinhaCorreta;
+    public List<AudioClip> audiosFiguras;
+    private Dictionary<string, AudioClip> mapaAudioBoquinhas = new();
+    private Dictionary<string, AudioClip> mapaAudioFiguras = new();
+
+
+
     private Dictionary<Sprite, Sprite> mapaLetraParaBoquinha = new();
-    Dictionary<string, string> nomeLetraParaBoquinha = new Dictionary<string, string>
+    Dictionary<string, string> mapaLetrasParaBocas = new Dictionary<string, string>
 {
     {"A", "A"},
     {"ASA", "Z-ASA"},
@@ -63,7 +79,7 @@ public class GameManagerBoquinhas : MonoBehaviour
     {"GE", "J-GE-GI"},
     {"GI", "J-GE-GI"},
     {"GU", "G-GU"},
-    {"H", "Z-ASA"}, // ou o que for correto
+    {"H", "A"},        // H é mudo, pode usar boca neutra como 'A' ou 'Z-ASA'
     {"I", "I"},
     {"J", "J-GE-GI"},
     {"L", "L"},
@@ -74,6 +90,7 @@ public class GameManagerBoquinhas : MonoBehaviour
     {"O", "Ó"},
     {"P", "P"},
     {"Q", "C-QU"},
+    {"QU", "C-QU"},
     {"R", "R-RR"},
     {"RR", "R-RR"},
     {"S", "S-CE-CI-SC"},
@@ -86,9 +103,9 @@ public class GameManagerBoquinhas : MonoBehaviour
     {"Ã", "Ã"},
     {"Ç", "S-CE-CI-SC"},
     {"É", "É"},
-    {"Ó", "Ó"},
-    {"Ô", "Ô"}
+    {"Ó", "Ó"}
 };
+
 
 
     private void Start()
@@ -99,24 +116,24 @@ public class GameManagerBoquinhas : MonoBehaviour
         boquinhaCorreta = GO_boquinhaCorreta.GetComponent<SpriteRenderer>();
         difficulty = (DifficultySaveManager)GameObject.FindObjectOfType(typeof(DifficultySaveManager));
         modoAtual = difficulty.GetSavedDifficultyLevel();
+        if (audioSource == null)
+            audioSource = GetComponent<AudioSource>();
 
         if (SceneManager.GetActiveScene().name == "RoundManager_Sample")
         {
             roundManager = (RoundManager)GameObject.FindObjectOfType(typeof(RoundManager));
         }
-
+        CriarMapaAudioBoquinhas();
+        CriarMapaAudioFiguras();
         CriarMapaLetraBoquinha();
         PrepararRodada();
-        // Inicia o fluxo do jogo aqui
+      
 
     }
 
     public IEnumerator IniciarGameplay()
     {
-        // TODO: Exibir desafio específico conforme modo
-
-
-
+        
         yield return new WaitForSeconds(2.0f);
 
         cortinaEsquerdaAnimator?.SetTrigger("abrir");
@@ -134,90 +151,154 @@ public class GameManagerBoquinhas : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
 
     }
-
     public void PrepararRodada()
     {
-        List<Sprite> sorteados;
+        int quantidade = ObterNumeroDeImagens();
 
-        switch (modoAtual)
+        // Define a lista correta de acordo com o modo atual
+        List<Sprite> fonte = modoAtual switch
         {
-            case DifficultyLevels.Mouths:
-                painelBocasLetras.SetActive(true);
-                painelFiguras.SetActive(false);
-                sorteados = SortearAleatorios(boquinhasDisponiveis, 3);
-                AtualizarIconesPainel(sorteados, Random.Range(0, sorteados.Count));
-                break;
+            DifficultyLevels.Mouths => boquinhasDisponiveis,
+            DifficultyLevels.Letters => letrasDisponiveis,
+            DifficultyLevels.Figures => figurasDisponiveis,
+            _ => new List<Sprite>()
+        };
 
-            case DifficultyLevels.Letters:
-                painelBocasLetras.SetActive(true);
-                painelFiguras.SetActive(false);
-                sorteados = SortearAleatorios(letrasDisponiveis, 3);
-                int idx = Random.Range(0, sorteados.Count);
-                AtualizarIconesPainel(sorteados, idx);
-                if (mapaLetraParaBoquinha.TryGetValue(sorteados[idx], out Sprite boca))
-                    boquinhaCorreta.sprite = boca;
-                break;
+        // Sorteia os sprites
+        List<Sprite> sorteados = SortearAleatorios(fonte, quantidade);
 
-            case DifficultyLevels.Figures:
-                painelBocasLetras.SetActive(false);
-                painelFiguras.SetActive(true);
-                sorteados = SortearAleatorios(figurasDisponiveis, 9);
-                AtualizarIconesPainel(sorteados);
-                break;
+        // Ativa o painel correspondente à quantidade
+        figuras6GO.SetActive(quantidade == 6);
+        figuras8GO.SetActive(quantidade == 8);
+        figuras12GO.SetActive(quantidade == 12);
+
+        // Escolhe índice da resposta correta
+        int idx = Random.Range(0, sorteados.Count);
+
+        // Atualiza o painel com os sprites e define a resposta correta
+        AtualizarIconesPainel(sorteados, idx);
+        // Define boquinha correta e áudio conforme o modo
+        if (modoAtual == DifficultyLevels.Letters && mapaLetraParaBoquinha.TryGetValue(sorteados[idx], out Sprite boca))
+        {
+            boquinhaCorreta.sprite = boca;
+            string chave = NormalizarNome(boca.name);
+            if (mapaAudioBoquinhas.TryGetValue(chave, out AudioClip clip))
+            {
+                audioBoquinhaCorreta = clip;
+                PlayAudioBoquinha();
+            }
+            else
+            {
+                Debug.LogWarning($"Áudio não encontrado para letra '{chave}'");
+            }
         }
+        else if (modoAtual == DifficultyLevels.Mouths)
+        {
+            boquinhaCorreta.sprite = sorteados[idx];
+            string chave = NormalizarNome(sorteados[idx].name);
+            if (mapaAudioBoquinhas.TryGetValue(chave, out AudioClip clip))
+            {
+                audioBoquinhaCorreta = clip;
+                PlayAudioBoquinha();
+            }
+            else
+            {
+                Debug.LogWarning($"Áudio não encontrado para boquinha '{chave}'");
+            }
+        }
+        else if (modoAtual == DifficultyLevels.Figures)
+        {
+            string chave = NormalizarNome(sorteados[idx].name);
+            if (mapaAudioFiguras.TryGetValue(chave, out AudioClip clip))
+            {
+                audioBoquinhaCorreta = clip;
+                PlayAudioBoquinha();
+            }
+            else
+            {
+                Debug.LogWarning($"Áudio não encontrado para figura '{chave}'");
+            }
+        }
+
+
+
     }
-    public void AtualizarIconesPainel(List<Sprite> sprites, int indexCorreto)
+
+
+    private void LimparTodosOsIcones()
     {
-        // Para modos Boquinhas e Letras (índice único passado)
-        for (int i = 0; i < 3; i++)
+        void Limpar(Transform grupo)
         {
-            if (i >= iconesPainelCentral.Count || i >= sprites.Count)
-                continue;
-
-            Image icone = iconesPainelCentral[i];
-            icone.sprite = sprites[i];
-
-            GuessItem guess = icone.GetComponent<GuessItem>();
-            if (guess == null)
-                guess = icone.gameObject.AddComponent<GuessItem>();
-
-            guess.tipo = modoAtual.ToString();
-            guess.isRespostaCorreta = (i == indexCorreto);
+            foreach (Transform t in grupo)
+            {
+                var img = t.GetComponent<UnityEngine.UI.Image>();
+                if (img != null)
+                    img.sprite = null;
+            }
         }
 
-        if (modoAtual == DifficultyLevels.Mouths)
-        {
-            boquinhaCorreta.sprite = sprites[indexCorreto];
-        }
+        Limpar(figuras6GO.transform);
+        Limpar(figuras8GO.transform);
+        Limpar(figuras12GO.transform);
     }
 
-    private void AtualizarIconesPainel(List<Sprite> sprites)
+    private int ObterNumeroDeImagens()
     {
-        if (sprites.Count < 9) return;
-
-        int indexCorreto1 = Random.Range(3, 9);
-        int indexCorreto2;
-        do
+        if (numeroJogadores <= 2)
         {
-            indexCorreto2 = Random.Range(3, 9);
-        } while (indexCorreto2 == indexCorreto1);
-
-        for (int i = 3; i < 9; i++)
+            if (numeroDaRodada <= 2) return 6;
+            else if (numeroDaRodada <= 4) return 8;
+            else return 12;
+        }
+        else
         {
-            if (i >= iconesPainelCentral.Count || i >= sprites.Count)
-                continue;
-
-            Image icone = iconesPainelCentral[i];
-            icone.sprite = sprites[i];
-
-            GuessItem guess = icone.GetComponent<GuessItem>();
-            if (guess == null)
-                guess = icone.gameObject.AddComponent<GuessItem>();
-
-            guess.tipo = modoAtual.ToString();
-            guess.isRespostaCorreta = (i == indexCorreto1 || i == indexCorreto2);
+            if (numeroDaRodada <= 2) return 6;
+            else return 12;
         }
     }
+    private void AtualizarIconesPainel(List<Sprite> sprites, int respostaCorretaIndex)
+    {
+        int total = sprites.Count;
+     
+        // Escolhe a lista de ícones correta com base na quantidade de sprites
+        List<Image> iconesAtuais = total switch
+        {
+            6 => iconesPainel_6,
+            8 => iconesPainel_8,
+            12 => iconesPainel_12,
+            _ => new List<Image>() // fallback vazio
+        };
+
+        for (int i = 0; i < iconesAtuais.Count; i++)
+        {
+            var icone = iconesAtuais[i];
+
+            if (i < total)
+            {
+                icone.gameObject.SetActive(true);
+                icone.sprite = sprites[i];
+
+                var guess = icone.GetComponent<GuessItem>();
+                if (guess == null)
+                    guess = icone.gameObject.AddComponent<GuessItem>();
+
+                guess.tipo = modoAtual.ToString();
+                guess.isRespostaCorreta = (i == respostaCorretaIndex);
+            }
+            else
+            {
+                icone.sprite = null;
+                var guess = icone.GetComponent<GuessItem>();
+                if (guess != null)
+                {
+                    guess.isRespostaCorreta = false;
+                    guess.tipo = "";
+                }
+            }
+        }
+    }
+
+
 
     private List<Sprite> SortearAleatorios(List<Sprite> lista, int quantidade)
     {
@@ -239,7 +320,7 @@ public class GameManagerBoquinhas : MonoBehaviour
         {
             string nomeLetra = letra.name;
 
-            if (nomeLetraParaBoquinha.TryGetValue(nomeLetra, out string nomeBoquinha))
+            if (mapaLetrasParaBocas.TryGetValue(nomeLetra, out string nomeBoquinha))
             {
                 Sprite boquinha = boquinhasDisponiveis.Find(b => b.name == nomeBoquinha);
                 if (boquinha != null)
@@ -256,6 +337,50 @@ public class GameManagerBoquinhas : MonoBehaviour
                 Debug.LogWarning($"Letra '{nomeLetra}' não está mapeada para nenhuma boquinha.");
             }
         }
+    }
+
+    private void CriarMapaAudioBoquinhas()
+    {
+        mapaAudioBoquinhas.Clear();
+        foreach (var clip in audiosBoquinhas)
+        {
+            string chave = NormalizarNome(clip.name);
+            if (!mapaAudioBoquinhas.ContainsKey(chave))
+                mapaAudioBoquinhas[chave] = clip;
+        }
+    }
+
+    private void CriarMapaAudioFiguras()
+    {
+        mapaAudioFiguras.Clear();
+        foreach (var clip in audiosFiguras)
+        {
+            string chave = NormalizarNome(clip.name);
+            if (!mapaAudioFiguras.ContainsKey(chave))
+                mapaAudioFiguras[chave] = clip;
+        }
+    }
+    private string NormalizarNome(string nome)
+    {
+        string normalizado = nome.ToLower().Normalize(System.Text.NormalizationForm.FormD);
+        System.Text.StringBuilder sb = new System.Text.StringBuilder();
+
+        foreach (char c in normalizado)
+        {
+            var categoria = System.Globalization.CharUnicodeInfo.GetUnicodeCategory(c);
+            if (categoria != System.Globalization.UnicodeCategory.NonSpacingMark)
+            {
+                if (char.IsLetterOrDigit(c))
+                    sb.Append(c);
+            }
+        }
+
+        return sb.ToString()
+                 .Replace("(", "")
+                 .Replace(")", "")
+                 .Replace("-", "")
+                 .Replace(" ", "")
+                 .Trim();
     }
 
 
@@ -314,5 +439,26 @@ public class GameManagerBoquinhas : MonoBehaviour
             yield return null;
         }
     }
+    public void PlayAudioBoquinha()
+    {
+        if (audioSource == null)
+        {
+            Debug.LogWarning("AudioSource não está definido.");
+            return;
+        }
+
+        if (audioBoquinhaCorreta == null)
+        {
+            Debug.LogWarning("Áudio da boquinha correta está nulo.");
+            return;
+        }
+
+        audioSource.Stop();
+        audioSource.clip = audioBoquinhaCorreta;
+        audioSource.volume = 1f;
+        audioSource.mute = false;
+        audioSource.Play();
+    }
+
 
 }

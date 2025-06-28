@@ -33,6 +33,7 @@ public class CanhaoController : MonoBehaviour
 
     public GraphicRaycaster raycaster;
     public EventSystem eventSystem;
+    public Button botaoAudioBoquinha;
     private GameBack btnback;
 
     Ray ray;
@@ -52,6 +53,7 @@ public class CanhaoController : MonoBehaviour
 
     private void Update()
     {
+      
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out hit))
         {
@@ -60,7 +62,7 @@ public class CanhaoController : MonoBehaviour
 
         if (!modoTutorial && Input.GetMouseButtonDown(0) && podeDisparar )
         {
-            if(!btnback.activate)
+            if(!btnback.activate && !MouseEstaSobreUIRelevante())
             {
                 Disparar(Input.mousePosition);
             }
@@ -251,5 +253,47 @@ public class CanhaoController : MonoBehaviour
         miraInstanciada.transform.position = spawnPoint.position + (Vector3)(direcao / 2f); // centraliza
         //miraInstanciada.transform.localScale = new Vector3(distancia, 1f, 1f); // estica a linha
     }
+    private bool MouseEstaSobreUIRelevante()
+    {
+        if (raycaster == null || eventSystem == null)
+        {
+            Debug.LogWarning("Raycaster ou EventSystem não atribuídos.");
+            return false;
+        }
+
+        PointerEventData pointerData = new PointerEventData(eventSystem)
+        {
+            position = Input.mousePosition
+        };
+
+        List<RaycastResult> results = new List<RaycastResult>();
+        raycaster.Raycast(pointerData, results);
+
+        foreach (var result in results)
+        {
+            if (result.gameObject == null) continue;
+
+            // Verifica se o objeto clicado é filho do botão de áudio
+            if (botaoAudioBoquinha != null && result.gameObject.transform.IsChildOf(botaoAudioBoquinha.transform))
+            {
+                return true;
+            }
+
+            if (result.gameObject.GetComponent<Button>() != null)
+            {
+                return true;
+            }
+            // Alternativa: checar por tag "UIIgnorarTiro"
+            if (result.gameObject.CompareTag("UIIgnorarTiro"))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+
 
 }

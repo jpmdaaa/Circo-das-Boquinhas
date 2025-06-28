@@ -160,11 +160,14 @@ public class RoundManager : MonoBehaviour
             timebar.StartTimer();
 
         }
-  
+    
         StartRound();
 
         StartCoroutine(gameManager.IniciarGameplay());
+
         
+
+
         pontuacoesJogadores.Clear();
         for (int i = 0; i < players.Count; i++)
         {
@@ -203,6 +206,7 @@ public class RoundManager : MonoBehaviour
     }
     public void StartRound()
     {
+        
         timebar.SetCustomTime(CalcularTempoDaRodada());
         StartCoroutine(RoundStartCoroutine());
         blockerRoxo.SetActive(true);
@@ -323,14 +327,17 @@ public class RoundManager : MonoBehaviour
         Debug.Log("entrou esconder");
      
         yield return new WaitForSecondsRealtime(delay);
+        PassTurn();
+
+        yield return new WaitForSecondsRealtime(0.5f);
         gameManager.IniciarGameplay();
         gameManager.coelhoTransform.position = gameManager.posicaoFinalCoelho;
         gameManager.coelhoAnimator.SetTrigger("aparecer");
         gameManager.CriarMapaLetraBoquinha();
-        gameManager.PrepararRodada();
         confirmAnswerPanel.gameObject.SetActive(false);
-        PassTurn();
-        
+
+        yield return new WaitForSecondsRealtime(1f);
+        gameManager.PrepararRodada();
 
 
 
@@ -588,7 +595,10 @@ public class RoundManager : MonoBehaviour
     {
         return activePlayerForMetrics;
     }
-
+    public int GetCurrentRoundNumber()
+    {
+        return roundNumber;
+    }
     public void AddToErrorCounter()
     {
         //XGH total
