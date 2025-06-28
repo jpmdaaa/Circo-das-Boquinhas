@@ -156,11 +156,13 @@ public class RoundManager : MonoBehaviour
         timebar = Timer.GetComponent<TimeBar>();
         if (TimerSystem.Instance.isTimerEnabled)
         {
+            float novoTempo = CalcularTempoDaRodada();
+            timebar.SetCustomTime(novoTempo);
             timebar.RestartTimer();
             timebar.StartTimer();
-
         }
-    
+
+
         StartRound();
 
         StartCoroutine(gameManager.IniciarGameplay());
@@ -319,48 +321,44 @@ public class RoundManager : MonoBehaviour
         // Troca para a cena final
         FindObjectOfType<ScenesSystem>().ChangeScene("GameEnd");
     }
+    private IEnumerator EsconderFeedbackAposDelay(float delay = 2f, bool devePassarTurno = true)
+{
+    Debug.Log($"[EsconderFeedback] Delay: {delay}, DevePassarTurno: {devePassarTurno}");
 
+    yield return new WaitForSecondsRealtime(delay);
 
+    gameManager.IniciarGameplay();
+    gameManager.coelhoTransform.position = gameManager.posicaoFinalCoelho;
+    gameManager.coelhoAnimator.SetTrigger("aparecer");
 
-    private IEnumerator EsconderFeedbackAposDelay(float delay = 2f)
+    switch (gameManager.modoAtual)
     {
-        Debug.Log("entrou esconder");
-
-        yield return new WaitForSecondsRealtime(delay);
-        PassTurn();
-
-        yield return new WaitForSecondsRealtime(0.5f);
-
-        gameManager.IniciarGameplay();
-        gameManager.coelhoTransform.position = gameManager.posicaoFinalCoelho;
-        gameManager.coelhoAnimator.SetTrigger("aparecer");
-
-        // Atualiza os mapas de acordo com o modo atual
-        switch (gameManager.modoAtual)
-        {
-            case DifficultyLevels.Letters:
-                gameManager.CriarMapaLetra();
-                break;
-
-            case DifficultyLevels.Mouths:
-                gameManager.CriarMapaBoca();
-                break;
-
-            case DifficultyLevels.Figures:
-                gameManager.CriarMapaFigura();
-                break;
-        }
-
-        confirmAnswerPanel.gameObject.SetActive(false);
-
-        yield return new WaitForSecondsRealtime(1f);
-
-        gameManager.PrepararRodada();
-
-        yield return new WaitForSeconds(0.5f);
-
-        gameManager.PlayAudioBoquinha();
+        case DifficultyLevels.Letters:
+            gameManager.CriarMapaLetra();
+            break;
+        case DifficultyLevels.Mouths:
+            gameManager.CriarMapaBoca();
+            break;
+        case DifficultyLevels.Figures:
+            gameManager.CriarMapaFigura();
+            break;
     }
+
+    confirmAnswerPanel.gameObject.SetActive(false);
+
+    yield return new WaitForSecondsRealtime(1f);
+    gameManager.PrepararRodada();
+
+    yield return new WaitForSecondsRealtime(0.5f);
+    gameManager.PlayAudioBoquinha();
+
+    if (devePassarTurno)
+    {
+        Debug.Log("[EsconderFeedback] → Chamando PassTurn()");
+        PassTurn();
+    }
+}
+
     private IEnumerator TurnStartCoroutine()
     {
 
@@ -486,24 +484,31 @@ public class RoundManager : MonoBehaviour
             return true;
         return false;
     }
-
     private void PassTurn()
     {
+        Debug.Log($"PassTurn chamado. Player atual: {_activePlayerNumber}, Total players: {players.Count}");
+
         timebar.SetCustomTime(CalcularTempoDaRodada());
-        //players[activePlayerNumber].transform.SetParent(playerPanel.transform);
-        if (players[_activePlayerNumber].gameObject.activeSelf) players[_activePlayerNumber].EnterGameplay(false);
-        if (_activePlayerNumber == players.Count - 1) // �ltimo jogador, terminar round
+
+        if (players[_activePlayerNumber].gameObject.activeSelf)
         {
+            players[_activePlayerNumber].EnterGameplay(false);
+            Debug.Log($"Player {_activePlayerNumber} EnterGameplay chamado.");
+        }
+
+        if (_activePlayerNumber == players.Count - 1)
+        {
+            Debug.Log("Último player do round. Iniciando RoundStartCoroutine.");
             _activePlayerNumber = 0;
-            //MetricsAPI.EndStage();
             StartCoroutine(RoundStartCoroutine());
             return;
         }
 
         _activePlayerNumber++;
+        Debug.Log($"Passando para o player {_activePlayerNumber}");
         StartCoroutine(TurnStartCoroutine());
-
     }
+
 
     public void CallAnswer(bool right, bool secondWrongAnswer = false)
     {
@@ -531,11 +536,11 @@ public class RoundManager : MonoBehaviour
             }
         }
     }
-
     public void PlayerGuessedRight()
     {
         rightAnswerAchieved = true;
-        if (autoMetricsExperimental) MetricsAPI.EndEvent(AvatarAPI.PlayersIdsFromSlot(activePlayerForMetrics), "Acertou.", "Acertou.");
+        if (autoMetricsExperimental)
+            MetricsAPI.EndEvent(AvatarAPI.PlayersIdsFromSlot(activePlayerForMetrics), "Acertou.", "Acertou.");
 
         gameManager.coelhoTransform.position = gameManager.posicaoFinalCoelho;
         gameManager.coelhoAnimator.SetTrigger("acerto");
@@ -543,46 +548,38 @@ public class RoundManager : MonoBehaviour
         pontuacoesJogadores[_activePlayerNumber].RegistrarAcerto(true);
         pontuacoesJogadores[_activePlayerNumber].IncrementarRodada();
 
-        StartCoroutine(EsconderFeedbackAposDelay());
+        StartCoroutine(EsconderFeedbackAposDelay(2f, true));
 
-        //EVENTO CONTINUAR PÓS ACERTO
         continueAfterRightAnswerEvent.Invoke();
-
     }
-
     public void PlayerGuessedWrong(bool pCanRetry = true)
     {
         AddToErrorCounter();
-        // Tentar de novo
-        if (autoMetricsExperimental) MetricsAPI.EndEvent(AvatarAPI.PlayersIdsFromSlot(activePlayerForMetrics), "Acertou.", "Errou.");
+        if (autoMetricsExperimental)
+            MetricsAPI.EndEvent(AvatarAPI.PlayersIdsFromSlot(activePlayerForMetrics), "Acertou.", "Errou.");
 
-        //pCanRetry = false;
-       
-        StartCoroutine(EsconderFeedbackAposDelay());
         gameManager.coelhoTransform.position = gameManager.posicaoInicialCoelho;
         gameManager.coelhoAnimator.SetTrigger("erro");
         TocarBalaoAleatorio();
 
-
         if (pCanRetry)
         {
-            //EVENTO TENTAR NOVAMENTE
-
-           
             TryAgainEvent.Invoke();
+
             if (TimerSystem.Instance.isTimerEnabled)
             {
+                float novoTempo = CalcularTempoDaRodada();
+                timebar.SetCustomTime(novoTempo);
                 timebar.RestartTimer();
                 timebar.StartTimer();
             }
+
+            StartCoroutine(EsconderFeedbackAposDelay(2f, false));
+
         }
         else
         {
-            
-
             PlayerGuessedWrongSecondTime();
-           
-
         }
     }
 
@@ -590,7 +587,12 @@ public class RoundManager : MonoBehaviour
     {
         ContinueAfterSecondWrongAnswer.Invoke();
         rightAnswerAchieved = true;
+
+        StartCoroutine(EsconderFeedbackAposDelay(2f, true));
+
     }
+
+
 
     public void StartTimer()
     {

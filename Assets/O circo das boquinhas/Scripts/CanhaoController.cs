@@ -41,7 +41,8 @@ public class CanhaoController : MonoBehaviour
     public AudioClip somTiroCorreto;
     public AudioClip somTiroErrado;
     public AudioSource audioFonte;
-  
+
+    private int tentativas = 0;
 
     Ray ray;
     RaycastHit hit;
@@ -87,58 +88,58 @@ public class CanhaoController : MonoBehaviour
     {
         podeDisparar = true;
     }
-
     public void Disparar(Vector2 posicaoAlvo)
     {
         if (!podeDisparar) return;
-        podeDisparar = false;
 
+        podeDisparar = false;
         RotacionarCanhao(posicaoAlvo);
 
-        // Verifica acerto
         acertou = VerificarAcerto(posicaoAlvo);
-
-        // Instanciar efeito
         Vector3 posicaoZcorrigida = new Vector3(posicaoAlvo.x, posicaoAlvo.y, 5f);
         GameObject prefab = acertou ? prefabTiroCerto : prefabTiroErrado;
         GameObject tiroInstanciado = Instantiate(prefab, posicaoZcorrigida, Quaternion.identity);
-        
 
+        audioFonte.Stop();
+        audioFonte.PlayOneShot(acertou ? somTiroCorreto : somTiroErrado);
 
-        if(acertou)
+        if (acertou)
         {
+            tentativas = 0;
             roundManager.CallAnswer(true);
-            roundManager.PlayerGuessedRight();
-            StartCoroutine(DestruirTiroDepoisDoFeedback(tiroInstanciado)); 
-            Debug.Log("Acertou");
-            audioFonte.Stop();
-            audioFonte.PlayOneShot(somTiroCorreto);
+            roundManager.PlayerGuessedRight(); // passa o turno
+        }
+        else
+        {
+            tentativas++;
+
+            if (tentativas == 1)
+            {
+                roundManager.CallAnswer(false); // mostra feedback 1ª tentativa
+                roundManager.PlayerGuessedWrong(true); // não passa turno
+                StartCoroutine(HabilitarSegundoDisparoDepoisDe(2f)); // só após feedback
+            }
+            else
+            {
+                tentativas = 0;
+                roundManager.CallAnswer(false, true); // mostra feedback final
+                roundManager.PlayerGuessedWrongSecondTime(); // passa turno
+            }
         }
 
-        else 
-        {
-            roundManager.CallAnswer(false);
-            roundManager.PlayerGuessedWrong();
-            StartCoroutine(DestruirTiroDepoisDoFeedback(tiroInstanciado));
-            Debug.Log("Errou");
-            audioFonte.Stop();
-            audioFonte.PlayOneShot(somTiroErrado);
-
-        }
-        /*
-        if(doisDisparos)
-        {
-            podeDisparar = true;
-            //roundManager.CallAnswer(false);
-            roundManager.PlayerGuessedWrongSecondTime();
-            StartCoroutine(DestruirTiroDepoisDoFeedback(tiroInstanciado));
-            doisDisparos = false;
-            audioFonte.Stop();
-            audioFonte.PlayOneShot(somTiroErrado);
-        }
-        animator.Play("CanhaoIdle", 0);
-        */
+        StartCoroutine(DestruirTiroDepoisDoFeedback(tiroInstanciado));
     }
+    private IEnumerator HabilitarSegundoDisparoDepoisDe(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        podeDisparar = true;
+    }
+    private IEnumerator HabilitarNovoDisparoDepoisDe(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        podeDisparar = true;
+    }
+
     private IEnumerator DestruirTiroDepoisDoFeedback(GameObject tiro)
     {
         yield return new WaitForSeconds(1f); // tempo de feedback na tela

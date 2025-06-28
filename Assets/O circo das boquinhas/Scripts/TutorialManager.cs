@@ -271,10 +271,10 @@ public class TutorialManager : MonoBehaviour
             yield return new WaitForSeconds(audioResposta.length);
         }
 
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(1.0f);
         maoCanhao.SetActive(true);
 
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(1.5f);
         maoCanhao.SetActive(false);
         canhao.DisparoTutorial();
 
