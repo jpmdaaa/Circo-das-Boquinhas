@@ -2912,9 +2912,12 @@ MonoBehaviour:
   cortinaEsquerdaAnimator: {fileID: 1854781688}
   cortinaDireitaAnimator: {fileID: 1232168728}
   audioFonte: {fileID: 2073579707}
-  narracoesBoquinhas: []
-  narracoesLetras: []
-  narracoesFiguras: []
+  audiosBoquinhas: []
+  audiosLetras: []
+  audiosFiguras: []
+  somCortina: {fileID: 8300000, guid: a4a84d4913933b14f8ce147faebd47a1, type: 3}
+  somFaixa: {fileID: 8300000, guid: f735298fbca176342bc14f929e1dada3, type: 3}
+  somAgoraEhComVoce: {fileID: 8300000, guid: 32119b251a0f83d469cca8543478b031, type: 3}
   GO_boquinhaCorreta: {fileID: 1385861661}
   cursorTexture: {fileID: 2800000, guid: b2401c24d99b7314c9743c42b05ebb4d, type: 3}
   roundManager: {fileID: 0}
@@ -3542,6 +3545,11 @@ MonoBehaviour:
     type: 3}
   raycaster: {fileID: 0}
   eventSystem: {fileID: 0}
+  botaoAudioBoquinha: {fileID: 0}
+  audioCanhao: {fileID: 8300000, guid: 12f506fd8a9bc2247b2089c76808e9c0, type: 3}
+  somTiroCorreto: {fileID: 8300000, guid: f8815a55c648584408bff50411b01843, type: 3}
+  somTiroErrado: {fileID: 8300000, guid: f8815a55c648584408bff50411b01843, type: 3}
+  audioFonte: {fileID: 0}
 --- !u!95 &1559626561
 Animator:
   serializedVersion: 5

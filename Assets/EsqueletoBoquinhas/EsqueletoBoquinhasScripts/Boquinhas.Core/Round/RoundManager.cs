@@ -339,6 +339,10 @@ public class RoundManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(1f);
         gameManager.PrepararRodada();
 
+        yield return new WaitForSeconds(0.5f); // dá um tempinho antes de falar
+
+        // ✅ Agora sim toca o áudio
+        gameManager.PlayAudioBoquinha();
 
 
     }
@@ -351,7 +355,7 @@ public class RoundManager : MonoBehaviour
         if (!players[_activePlayerNumber].gameObject
                 .activeSelf) // Se o jogador n�o estiver setado e ativo desde o come�o, vai para o pr�ximo jogador
         {
-            PassTurn();
+           
             yield break;
         }
 
@@ -429,11 +433,14 @@ public class RoundManager : MonoBehaviour
         //playerGuessPanel.SetActive(false);
         rightAnswerAchieved = false;
 
+       
+
         yield return new WaitForSecondsRealtime(2f); // Anima��o de feedback positivo da carta devido � acerto
+
 
       
 
-        PassTurn();
+    
     }
 
     private void TurnPanel()
@@ -478,6 +485,7 @@ public class RoundManager : MonoBehaviour
 
         _activePlayerNumber++;
         StartCoroutine(TurnStartCoroutine());
+
     }
 
     public void CallAnswer(bool right, bool secondWrongAnswer = false)

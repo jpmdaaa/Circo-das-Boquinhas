@@ -36,6 +36,13 @@ public class CanhaoController : MonoBehaviour
     public Button botaoAudioBoquinha;
     private GameBack btnback;
 
+    [Header("Áudios")]
+    public AudioClip audioCanhao;
+    public AudioClip somTiroCorreto;
+    public AudioClip somTiroErrado;
+    public AudioSource audioFonte;
+  
+
     Ray ray;
     RaycastHit hit;
 
@@ -43,6 +50,8 @@ public class CanhaoController : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         btnback = (GameBack)GameObject.FindObjectOfType(typeof(GameBack));
+        audioFonte  = (AudioSource)GameObject.FindObjectOfType(typeof(AudioSource));
+
         if (SceneManager.GetActiveScene().name== "RoundManager_Sample")
         {
             roundManager = (RoundManager)GameObject.FindObjectOfType(typeof(RoundManager));
@@ -102,7 +111,8 @@ public class CanhaoController : MonoBehaviour
             roundManager.PlayerGuessedRight();
             StartCoroutine(DestruirTiroDepoisDoFeedback(tiroInstanciado)); 
             Debug.Log("Acertou");
-          
+            audioFonte.Stop();
+            audioFonte.PlayOneShot(somTiroCorreto);
         }
 
         else 
@@ -111,19 +121,23 @@ public class CanhaoController : MonoBehaviour
             roundManager.PlayerGuessedWrong();
             StartCoroutine(DestruirTiroDepoisDoFeedback(tiroInstanciado));
             Debug.Log("Errou");
-           
-        }
+            audioFonte.Stop();
+            audioFonte.PlayOneShot(somTiroErrado);
 
+        }
+        /*
         if(doisDisparos)
         {
             podeDisparar = true;
-            roundManager.CallAnswer(false);
+            //roundManager.CallAnswer(false);
             roundManager.PlayerGuessedWrongSecondTime();
             StartCoroutine(DestruirTiroDepoisDoFeedback(tiroInstanciado));
             doisDisparos = false;
+            audioFonte.Stop();
+            audioFonte.PlayOneShot(somTiroErrado);
         }
         animator.Play("CanhaoIdle", 0);
-
+        */
     }
     private IEnumerator DestruirTiroDepoisDoFeedback(GameObject tiro)
     {
@@ -180,6 +194,8 @@ public class CanhaoController : MonoBehaviour
                     alvosCorretos.Add(item);
             }
             StartCoroutine(DispararEmSequencia(alvosCorretos));
+            audioFonte.Stop();
+            audioFonte.PlayOneShot(somTiroCorreto);
         }
         else
         {
@@ -191,7 +207,7 @@ public class CanhaoController : MonoBehaviour
                     Vector3 pos = item.transform.position;
                     pos.z = 5f;
 
-                    RotacionarCanhao(pos);
+                    RotacionarCanhaoMundo(pos);
                     InstanciarMira(pos);
 
                     if (prefabTiroCerto != null)
@@ -294,6 +310,15 @@ public class CanhaoController : MonoBehaviour
     }
 
 
+    private void RotacionarCanhaoMundo(Vector3 posicaoMundo)
+    {
+        Vector2 direcao = ((Vector2)posicaoMundo - (Vector2)transform.position).normalized;
+
+        float angulo = Mathf.Atan2(direcao.y, direcao.x) * Mathf.Rad2Deg;
+        string trigger = DirecaoParaAnimacao(angulo);
+
+        animator.SetTrigger(trigger);
+    }
 
 
 }

@@ -59,7 +59,8 @@ public class GameManagerBoquinhas : MonoBehaviour
     public List<AudioClip> audiosFiguras;
     private Dictionary<string, AudioClip> mapaAudioBoquinhas = new();
     private Dictionary<string, AudioClip> mapaAudioFiguras = new();
-
+    public AudioClip somCortina;
+    private AudioClip somFeedback;
 
 
     private Dictionary<Sprite, Sprite> mapaLetraParaBoquinha = new();
@@ -138,6 +139,7 @@ public class GameManagerBoquinhas : MonoBehaviour
 
         cortinaEsquerdaAnimator?.SetTrigger("abrir");
         cortinaDireitaAnimator?.SetTrigger("abrir");
+        audioSource.PlayOneShot(somCortina);
 
         yield return new WaitForSeconds(2.0f);
 
@@ -146,7 +148,11 @@ public class GameManagerBoquinhas : MonoBehaviour
         imageFalaCoelho.SetActive(true);
         GO_boquinhaCorreta.SetActive(true);
 
-      
+        yield return new WaitForSeconds(0.5f); // dá um tempinho antes de falar
+
+        // Agora sim toca o áudio
+        PlayAudioBoquinha();
+
         canhao.podeDisparar = true;
         yield return new WaitForSeconds(1.5f);
 
@@ -185,7 +191,7 @@ public class GameManagerBoquinhas : MonoBehaviour
             if (mapaAudioBoquinhas.TryGetValue(chave, out AudioClip clip))
             {
                 audioBoquinhaCorreta = clip;
-                PlayAudioBoquinha();
+               
             }
             else
             {
@@ -199,7 +205,7 @@ public class GameManagerBoquinhas : MonoBehaviour
             if (mapaAudioBoquinhas.TryGetValue(chave, out AudioClip clip))
             {
                 audioBoquinhaCorreta = clip;
-                PlayAudioBoquinha();
+             
             }
             else
             {
@@ -212,7 +218,7 @@ public class GameManagerBoquinhas : MonoBehaviour
             if (mapaAudioFiguras.TryGetValue(chave, out AudioClip clip))
             {
                 audioBoquinhaCorreta = clip;
-                PlayAudioBoquinha();
+           
             }
             else
             {

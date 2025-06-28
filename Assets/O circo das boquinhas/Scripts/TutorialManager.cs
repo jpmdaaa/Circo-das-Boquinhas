@@ -65,9 +65,15 @@ public class TutorialManager : MonoBehaviour
 
     [Header("Áudios")]
     public AudioSource audioFonte;
-    public AudioClip[] narracoesBoquinhas;
-    public AudioClip[] narracoesLetras;
-    public AudioClip[] narracoesFiguras;
+    public List<AudioClip> audiosBoquinhas;
+    public List<AudioClip> audiosLetras;
+    public List<AudioClip> audiosFiguras;
+    private Dictionary<string, AudioClip> mapaAudioBoquinhas = new();
+    private Dictionary<string, AudioClip> mapaAudioLetras = new();
+    private Dictionary<string, AudioClip> mapaAudioFiguras = new();
+    public AudioClip somCortina;
+    public AudioClip somFaixa;
+    public AudioClip somAgoraEhComVoce;
 
     [Header("Boquinha Correta")]
     private SpriteRenderer boquinhaCorreta;
@@ -96,6 +102,10 @@ public class TutorialManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        CriarMapaAudioBoquinhas();
+        CriarMapaAudioLetras();
+        CriarMapaAudioFiguras();
+
         boquinhaCorreta = GO_boquinhaCorreta.GetComponent<SpriteRenderer>();
         difficulty = (DifficultySaveManager)GameObject.FindObjectOfType(typeof(DifficultySaveManager));
         modoAtual = difficulty.GetSavedDifficultyLevel();
@@ -155,7 +165,19 @@ public class TutorialManager : MonoBehaviour
 
         Sprite resposta = sorteados[indexCorreto];
         if (boquinhaCorreta != null && resposta != null)
+        {
             boquinhaCorreta.sprite = resposta;
+            string chave = NormalizarNome(boquinhaCorreta.sprite.name);
+           
+            if (mapaAudioBoquinhas.TryGetValue(chave, out AudioClip clip))
+            {
+                audioFonte.Stop();
+
+                audioFonte.clip = clip;
+                audioFonte.Play();
+                yield return new WaitForSeconds(clip.length);
+            }
+        }
 
         yield return StartCoroutine(EtapasFinaisTutorial());
     }
@@ -190,7 +212,16 @@ public class TutorialManager : MonoBehaviour
             Debug.LogWarning("Boquinha não encontrada para a letra: " + letraCorreta.name);
         }
 
- 
+        string chave = NormalizarNome(boquinhaCorreta.sprite.name);
+        if (mapaAudioBoquinhas.TryGetValue(chave, out AudioClip clip))
+        {
+            audioFonte.Stop();
+
+            audioFonte.clip = clip;
+            audioFonte.Play();
+            yield return new WaitForSeconds(clip.length); // <-- aguarda o áudio
+        }
+
         yield return StartCoroutine(EtapasFinaisTutorial());
     }
 
@@ -204,7 +235,17 @@ public class TutorialManager : MonoBehaviour
         List<Sprite> sorteados = SortearAleatorios(figurasDisponiveis, 9);
         AtualizarIconesPainel(sorteados);
 
-  
+        int indexCorreto = Random.Range(0, sorteados.Count);
+        // definir como correta e tocar som
+        string chave = NormalizarNome(sorteados[indexCorreto].name);
+        if (mapaAudioFiguras.TryGetValue(chave, out AudioClip clip))
+        {
+            audioFonte.Stop();
+            audioFonte.clip = clip;
+            audioFonte.Play();
+            yield return new WaitForSeconds(clip.length); // esperar o som
+        }
+
         yield return StartCoroutine(EtapasFinaisTutorial());
     }
 
@@ -216,6 +257,7 @@ public class TutorialManager : MonoBehaviour
         yield return new WaitForSeconds(2.0f);
         cortinaEsquerdaAnimator?.SetTrigger("abrir");
         cortinaDireitaAnimator?.SetTrigger("abrir");
+        audioFonte.PlayOneShot(somCortina);
 
         yield return new WaitForSeconds(2.0f);
         coelhoAnimator?.SetTrigger("aparecer");
@@ -364,11 +406,13 @@ public class TutorialManager : MonoBehaviour
         if (desenrolar)
         {
             faixa.Play("FaixaAnim", 0, 0f);
+            audioFonte.PlayOneShot(somFaixa);
             faixa.speed = 0.6f;
         }
         else
         {
             faixa.Play("FaixaAnim", 0, 1f);
+           
             faixa.speed = -0.6f;
         }
     }
@@ -397,6 +441,7 @@ public class TutorialManager : MonoBehaviour
         //canvasBloqueador.SetActive(false);
 
         DispararConfetes();
+        audioFonte.PlayOneShot(somAgoraEhComVoce);
 
         yield return new WaitForSeconds(4f);
 
@@ -453,6 +498,61 @@ public class TutorialManager : MonoBehaviour
     {
         string jogo = GameManager.Instance.boquinhasConfigurationSettings.gameSceneName;
         FindObjectOfType<ScenesSystem>().ChangeScene(jogo);
+    }
+    private void CriarMapaAudioBoquinhas()
+    {
+        mapaAudioBoquinhas.Clear();
+        foreach (var clip in audiosBoquinhas)
+        {
+            string chave = NormalizarNome(clip.name);
+            if (!mapaAudioBoquinhas.ContainsKey(chave))
+                mapaAudioBoquinhas[chave] = clip;
+        }
+    }
+
+    private void CriarMapaAudioLetras()
+    {
+        mapaAudioLetras.Clear();
+        foreach (var clip in audiosLetras)
+        {
+            string chave = NormalizarNome(clip.name);
+            if (!mapaAudioLetras.ContainsKey(chave))
+                mapaAudioLetras[chave] = clip;
+        }
+    }
+
+    private void CriarMapaAudioFiguras()
+    {
+        mapaAudioFiguras.Clear();
+        foreach (var clip in audiosFiguras)
+        {
+            string chave = NormalizarNome(clip.name);
+            if (!mapaAudioFiguras.ContainsKey(chave))
+                mapaAudioFiguras[chave] = clip;
+        }
+    }
+
+    private string NormalizarNome(string nome)
+    {
+        string normalizado = nome.ToLower().Normalize(System.Text.NormalizationForm.FormD);
+        System.Text.StringBuilder sb = new System.Text.StringBuilder();
+
+        foreach (char c in normalizado)
+        {
+            var categoria = System.Globalization.CharUnicodeInfo.GetUnicodeCategory(c);
+            if (categoria != System.Globalization.UnicodeCategory.NonSpacingMark)
+            {
+                if (char.IsLetterOrDigit(c))
+                    sb.Append(c);
+            }
+        }
+
+        return sb.ToString()
+                 .Replace("(", "")
+                 .Replace(")", "")
+                 .Replace("-", "")
+                 .Replace(" ", "")
+                 .Trim();
     }
 
 }

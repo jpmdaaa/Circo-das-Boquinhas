@@ -2801,7 +2801,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: f718dff022f3bec4e86295bd548d6fca, type: 3}
   - {fileID: 8300000, guid: 36e1d62dc19740340811be411f8efda2, type: 3}
   - {fileID: 8300000, guid: 3b704528988f837449f86c742956fe5e, type: 3}
-  audioSource: {fileID: 0}
+  audioSource: {fileID: 455829512}
   audiosFiguras:
   - {fileID: 8300000, guid: 40b190c1481b4d34ea7692620f0a5184, type: 3}
   - {fileID: 8300000, guid: 593f85411cc629f48a4d41ace17a0760, type: 3}
@@ -3108,6 +3108,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 3dc162bf1b0469948b0d6a4ace14708f, type: 3}
   - {fileID: 8300000, guid: 2726af0269bfa1a44a257250f5e3f41a, type: 3}
   - {fileID: 8300000, guid: 593ccb222fedf51408b401e20f31aa67, type: 3}
+  somCortina: {fileID: 8300000, guid: a4a84d4913933b14f8ce147faebd47a1, type: 3}
 --- !u!82 &455829512
 AudioSource:
   m_ObjectHideFlags: 0
@@ -6618,6 +6619,10 @@ MonoBehaviour:
   raycaster: {fileID: 1239332535}
   eventSystem: {fileID: 1097199901}
   botaoAudioBoquinha: {fileID: 752540411}
+  audioCanhao: {fileID: 8300000, guid: a0ed39f5dbde5414facf9a514fd9c844, type: 3}
+  somTiroCorreto: {fileID: 8300000, guid: f8815a55c648584408bff50411b01843, type: 3}
+  somTiroErrado: {fileID: 8300000, guid: f8815a55c648584408bff50411b01843, type: 3}
+  audioFonte: {fileID: 0}
 --- !u!1 &1171494878
 GameObject:
   m_ObjectHideFlags: 0
