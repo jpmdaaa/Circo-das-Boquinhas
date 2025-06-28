@@ -325,26 +325,41 @@ public class RoundManager : MonoBehaviour
     private IEnumerator EsconderFeedbackAposDelay(float delay = 2f)
     {
         Debug.Log("entrou esconder");
-     
+
         yield return new WaitForSecondsRealtime(delay);
         PassTurn();
 
         yield return new WaitForSecondsRealtime(0.5f);
+
         gameManager.IniciarGameplay();
         gameManager.coelhoTransform.position = gameManager.posicaoFinalCoelho;
         gameManager.coelhoAnimator.SetTrigger("aparecer");
-        gameManager.CriarMapaLetraBoquinha();
+
+        // Atualiza os mapas de acordo com o modo atual
+        switch (gameManager.modoAtual)
+        {
+            case DifficultyLevels.Letters:
+                gameManager.CriarMapaLetra();
+                break;
+
+            case DifficultyLevels.Mouths:
+                gameManager.CriarMapaBoca();
+                break;
+
+            case DifficultyLevels.Figures:
+                gameManager.CriarMapaFigura();
+                break;
+        }
+
         confirmAnswerPanel.gameObject.SetActive(false);
 
         yield return new WaitForSecondsRealtime(1f);
+
         gameManager.PrepararRodada();
 
-        yield return new WaitForSeconds(0.5f); // dá um tempinho antes de falar
+        yield return new WaitForSeconds(0.5f);
 
-        // ✅ Agora sim toca o áudio
         gameManager.PlayAudioBoquinha();
-
-
     }
     private IEnumerator TurnStartCoroutine()
     {
@@ -406,6 +421,8 @@ public class RoundManager : MonoBehaviour
         players[_activePlayerNumber].transform.SetSiblingIndex(0);
 
         players[_activePlayerNumber].EnterTurn();
+        pontuacoesJogadores[_activePlayerNumber].IncrementarRodada();
+
         yield return new WaitForSecondsRealtime(1f); // Aguardar anima��o de entrada para o turno
 
         blockerRoxo.SetActive(false);
@@ -564,7 +581,7 @@ public class RoundManager : MonoBehaviour
             
 
             PlayerGuessedWrongSecondTime();
-            pontuacoesJogadores[_activePlayerNumber].IncrementarRodada();
+           
 
         }
     }

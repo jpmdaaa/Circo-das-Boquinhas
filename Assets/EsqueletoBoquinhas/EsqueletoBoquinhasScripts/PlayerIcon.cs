@@ -52,42 +52,31 @@ public class PlayerIcon : MonoBehaviour
 
     public void ShowStars(int number)
     {
+     
         StartCoroutine(IShowStars(number));
     }
-
     private IEnumerator IShowStars(int number)
     {
         var delay = 0.5f;
-        if (number == 0)
+
+        if (number >= 1)
         {
             star1.SetTrigger("Show");
             PlayStarSound();
             yield return new WaitForSeconds(delay);
+        }
+        if (number >= 2)
+        {
             star2.SetTrigger("Show");
             PlayStarSound();
             yield return new WaitForSeconds(delay);
+        }
+        if (number >= 3)
+        {
             star3.SetTrigger("Show");
             PlayStarSound();
         }
-        else if (number == 1)
-        {
-            star1.SetTrigger("Show");
-            PlayStarSound();
-            yield return new WaitForSeconds(delay);
-            star2.SetTrigger("Show");
-            PlayStarSound();
-        }
-        else if (number >= 2)
-        {
-            star1.SetTrigger("Show");
-            PlayStarSound();
-        }
-        else
-        {
-            yield return new WaitForSeconds(0);
-        }
     }
-
     public void PlayStarSound()
     {
         AudioSystem.Instance.PlaySilenceableSfx(starSound);

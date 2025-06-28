@@ -68,9 +68,9 @@ public class TutorialManager : MonoBehaviour
     public List<AudioClip> audiosBoquinhas;
     public List<AudioClip> audiosLetras;
     public List<AudioClip> audiosFiguras;
-    private Dictionary<string, AudioClip> mapaAudioBoquinhas = new();
-    private Dictionary<string, AudioClip> mapaAudioLetras = new();
-    private Dictionary<string, AudioClip> mapaAudioFiguras = new();
+    private Dictionary<Sprite, AudioClip> mapaBoca = new();
+    private Dictionary<Sprite, Sprite> mapaLetra = new();
+    private Dictionary<Sprite, AudioClip> mapaFigura = new();
     public AudioClip somCortina;
     public AudioClip somFaixa;
     public AudioClip somAgoraEhComVoce;
@@ -81,7 +81,7 @@ public class TutorialManager : MonoBehaviour
 
     [Header("Controle Geral")]
     //[SerializeField] private GameObject canvasBloqueador;
-    public Texture2D cursorTexture;
+  
     public RoundManager roundManager;
     public CanhaoController canhao;
 
@@ -102,9 +102,9 @@ public class TutorialManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        CriarMapaAudioBoquinhas();
-        CriarMapaAudioLetras();
-        CriarMapaAudioFiguras();
+        CriarMapaBoca();
+        CriarMapaLetra();
+        CriarMapaFigura();
 
         boquinhaCorreta = GO_boquinhaCorreta.GetComponent<SpriteRenderer>();
         difficulty = (DifficultySaveManager)GameObject.FindObjectOfType(typeof(DifficultySaveManager));
@@ -123,7 +123,12 @@ public class TutorialManager : MonoBehaviour
         GO_boquinhaCorreta.SetActive(false);
         CriarMapaLetraBoquinha();
         coelhoTransform.position = posicaoInicialCoelho;
-        
+        if (audioFonte == null)
+        {
+            audioFonte = GetComponent<AudioSource>();
+            if (audioFonte == null)
+                Debug.LogError("AudioSource não encontrado no TutorialManager.");
+        }
 
         StartCoroutine(ExecutarTutorial(modoAtual));
 
@@ -132,8 +137,7 @@ public class TutorialManager : MonoBehaviour
     private IEnumerator ExecutarTutorial(DifficultyLevels modo)
     {
         Debug.Log("Executar tutorial");    
-        Cursor.SetCursor(cursorTexture, Vector2.zero, CursorMode.Auto);
-     
+       
 
         switch (modoAtual)
         {
@@ -152,6 +156,16 @@ public class TutorialManager : MonoBehaviour
         }
    
     }
+
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            IrParaJogo();
+        }
+
+    }
     private IEnumerator TutorialBoquinhas()
     {
         text_modo_Bocas.SetActive(true);
@@ -164,32 +178,18 @@ public class TutorialManager : MonoBehaviour
         AtualizarIconesPainel(sorteados, indexCorreto);
 
         Sprite resposta = sorteados[indexCorreto];
+        AudioClip audioResposta = null; // ✅ CORREÇÃO AQUI
+
         if (boquinhaCorreta != null && resposta != null)
         {
             boquinhaCorreta.sprite = resposta;
-            string chave = NormalizarNome(boquinhaCorreta.sprite.name);
-           
-            if (mapaAudioBoquinhas.TryGetValue(chave, out AudioClip clip))
-            {
-                audioFonte.Stop();
-
-                audioFonte.clip = clip;
-                audioFonte.Play();
-                yield return new WaitForSeconds(clip.length);
-            }
+            if (mapaBoca.TryGetValue(resposta, out AudioClip clip))
+                audioResposta = clip;
         }
 
-        yield return StartCoroutine(EtapasFinaisTutorial());
+        yield return StartCoroutine(EtapasFinaisTutorial(audioResposta));
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            IrParaJogo();
-        }
-            
-    }
     private IEnumerator TutorialLetras()
     {
         text_modo_Letas.SetActive(true);
@@ -201,28 +201,22 @@ public class TutorialManager : MonoBehaviour
 
         AtualizarIconesPainel(sorteados, indexCorreto);
 
-        // Atualiza boquinha correspondente à letra correta
         Sprite letraCorreta = sorteados[indexCorreto];
-        if (mapaLetraParaBoquinha.ContainsKey(letraCorreta))
+        AudioClip audioResposta = null;
+
+        if (mapaLetra.TryGetValue(letraCorreta, out Sprite boca))
         {
-            boquinhaCorreta.sprite = mapaLetraParaBoquinha[letraCorreta];
+            boquinhaCorreta.sprite = boca;
+            if (mapaBoca.TryGetValue(boca, out AudioClip clip))
+                audioResposta = clip;
         }
+
         else
         {
             Debug.LogWarning("Boquinha não encontrada para a letra: " + letraCorreta.name);
         }
 
-        string chave = NormalizarNome(boquinhaCorreta.sprite.name);
-        if (mapaAudioBoquinhas.TryGetValue(chave, out AudioClip clip))
-        {
-            audioFonte.Stop();
-
-            audioFonte.clip = clip;
-            audioFonte.Play();
-            yield return new WaitForSeconds(clip.length); // <-- aguarda o áudio
-        }
-
-        yield return StartCoroutine(EtapasFinaisTutorial());
+        yield return StartCoroutine(EtapasFinaisTutorial(audioResposta));
     }
 
     private IEnumerator TutorialFiguras()
@@ -233,23 +227,24 @@ public class TutorialManager : MonoBehaviour
         painelBocasLetras.SetActive(false);
 
         List<Sprite> sorteados = SortearAleatorios(figurasDisponiveis, 9);
-        AtualizarIconesPainel(sorteados);
+        int indexCorreto = Random.Range(3, 9);
 
-        int indexCorreto = Random.Range(0, sorteados.Count);
-        // definir como correta e tocar som
+        AtualizarIconesPainelComIndiceCorreto(sorteados, indexCorreto);
+
         string chave = NormalizarNome(sorteados[indexCorreto].name);
-        if (mapaAudioFiguras.TryGetValue(chave, out AudioClip clip))
-        {
-            audioFonte.Stop();
-            audioFonte.clip = clip;
-            audioFonte.Play();
-            yield return new WaitForSeconds(clip.length); // esperar o som
-        }
+     
 
-        yield return StartCoroutine(EtapasFinaisTutorial());
+        Sprite figura = sorteados[indexCorreto];
+        AudioClip audioResposta = null;
+
+        if (mapaFigura.TryGetValue(figura, out AudioClip clip))
+            audioResposta = clip;
+
+
+        yield return StartCoroutine(EtapasFinaisTutorial(clip));
     }
 
-    private IEnumerator EtapasFinaisTutorial()
+    private IEnumerator EtapasFinaisTutorial(AudioClip audioResposta = null)
     {
         yield return new WaitForSeconds(2.0f);
         AtivarFaixa(true);
@@ -264,6 +259,17 @@ public class TutorialManager : MonoBehaviour
         coelhoTransform.position = posicaoFinalCoelho;
         imageFalaCoelho.SetActive(true);
         GO_boquinhaCorreta.SetActive(true);
+
+        // TOCAR O ÁUDIO DA RESPOSTA DEPOIS QUE O COELHO APARECE
+        if (audioResposta != null)
+        {
+            audioFonte.Stop();
+            audioFonte.clip = audioResposta;
+            audioFonte.volume = 1f;
+            audioFonte.mute = false;
+            audioFonte.Play();
+            yield return new WaitForSeconds(audioResposta.length);
+        }
 
         yield return new WaitForSeconds(2.0f);
         maoCanhao.SetActive(true);
@@ -361,6 +367,24 @@ public class TutorialManager : MonoBehaviour
         if (letraC != null && bocaC != null) mapaLetraParaBoquinha[letraC] = bocaC;
     }
 
+    private void AtualizarIconesPainelComIndiceCorreto(List<Sprite> sprites, int indexCorreto)
+    {
+        for (int i = 3; i < 9; i++)
+        {
+            if (i >= iconesPainelCentral.Count || i >= sprites.Count)
+                continue;
+
+            Image icone = iconesPainelCentral[i];
+            icone.sprite = sprites[i];
+
+            GuessItem guess = icone.GetComponent<GuessItem>();
+            if (guess == null)
+                guess = icone.gameObject.AddComponent<GuessItem>();
+
+            guess.tipo = modoAtual.ToString();
+            guess.isRespostaCorreta = (i == indexCorreto); // só uma correta
+        }
+    }
 
     private void AplicarSpriteComTipo(Image icone, List<Sprite> sprites, int index, bool isCorreta)
     {
@@ -499,38 +523,50 @@ public class TutorialManager : MonoBehaviour
         string jogo = GameManager.Instance.boquinhasConfigurationSettings.gameSceneName;
         FindObjectOfType<ScenesSystem>().ChangeScene(jogo);
     }
-    private void CriarMapaAudioBoquinhas()
+    private void CriarMapaBoca()
     {
-        mapaAudioBoquinhas.Clear();
-        foreach (var clip in audiosBoquinhas)
+        mapaBoca.Clear();
+        foreach (var boca in boquinhasDisponiveis)
         {
-            string chave = NormalizarNome(clip.name);
-            if (!mapaAudioBoquinhas.ContainsKey(chave))
-                mapaAudioBoquinhas[chave] = clip;
+            string chave = NormalizarNome(boca.name);
+            var audio = audiosBoquinhas.Find(a => NormalizarNome(a.name) == chave);
+            if (audio != null)
+                mapaBoca[boca] = audio;
+            else
+                Debug.LogWarning($"Áudio da boca '{boca.name}' não encontrado.");
+        }
+    }
+    private void CriarMapaLetra()
+    {
+        mapaLetra.Clear();
+        foreach (var letra in letrasDisponiveis)
+        {
+            string nomeLetra = letra.name;
+            var nomeBoca = nomeLetra; // ou mapeie manualmente se necessário
+
+            Sprite boca = boquinhasDisponiveis.Find(b => b.name == nomeBoca);
+            if (boca != null)
+                mapaLetra[letra] = boca;
+            else
+                Debug.LogWarning($"Boca '{nomeBoca}' não encontrada para a letra '{nomeLetra}'.");
         }
     }
 
-    private void CriarMapaAudioLetras()
+
+    private void CriarMapaFigura()
     {
-        mapaAudioLetras.Clear();
-        foreach (var clip in audiosLetras)
+        mapaFigura.Clear();
+        foreach (var figura in figurasDisponiveis)
         {
-            string chave = NormalizarNome(clip.name);
-            if (!mapaAudioLetras.ContainsKey(chave))
-                mapaAudioLetras[chave] = clip;
+            string chave = NormalizarNome(figura.name);
+            var audio = audiosFiguras.Find(a => NormalizarNome(a.name) == chave);
+            if (audio != null)
+                mapaFigura[figura] = audio;
+            else
+                Debug.LogWarning($"Áudio da figura '{figura.name}' não encontrado.");
         }
     }
 
-    private void CriarMapaAudioFiguras()
-    {
-        mapaAudioFiguras.Clear();
-        foreach (var clip in audiosFiguras)
-        {
-            string chave = NormalizarNome(clip.name);
-            if (!mapaAudioFiguras.ContainsKey(chave))
-                mapaAudioFiguras[chave] = clip;
-        }
-    }
 
     private string NormalizarNome(string nome)
     {

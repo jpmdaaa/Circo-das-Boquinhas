@@ -174,49 +174,34 @@ public class CanhaoController : MonoBehaviour
             return "Disparar_Frente";
     }
 
-
     public void DisparoTutorial()
     {
         Debug.Log("Disparei canhao tutorial");
-        GuessItem[] itens = GameObject.FindObjectsOfType<GuessItem>();
 
         if (TutorialManager.Instance == null) return;
 
-        var modo = TutorialManager.Instance.modoAtual;
+        GuessItem[] itens = GameObject.FindObjectsOfType<GuessItem>();
 
-        if (modo == DifficultyLevels.Figures)
+        foreach (var item in itens)
         {
-            // Disparar em dois corretos
-            List<GuessItem> alvosCorretos = new List<GuessItem>();
-            foreach (var item in itens)
+            if (item.isRespostaCorreta)
             {
-                if (item.isRespostaCorreta)
-                    alvosCorretos.Add(item);
-            }
-            StartCoroutine(DispararEmSequencia(alvosCorretos));
-            audioFonte.Stop();
-            audioFonte.PlayOneShot(somTiroCorreto);
-        }
-        else
-        {
-            // Disparar apenas uma vez no correto
-            foreach (var item in itens)
-            {
-                if (item.isRespostaCorreta)
-                {
-                    Vector3 pos = item.transform.position;
-                    pos.z = 5f;
+                Vector3 pos = item.transform.position;
+                pos.z = 5f;
 
-                    RotacionarCanhaoMundo(pos);
-                    InstanciarMira(pos);
+                RotacionarCanhaoMundo(pos);
+                InstanciarMira(pos);
 
-                    if (prefabTiroCerto != null)
-                        Instantiate(prefabTiroCerto, pos, Quaternion.identity);
-                    break;
-                }
+                if (prefabTiroCerto != null)
+                    Instantiate(prefabTiroCerto, pos, Quaternion.identity);
+
+                audioFonte.Stop();
+                audioFonte.PlayOneShot(somTiroCorreto);
+                break; // garante apenas um disparo
             }
         }
     }
+
     private bool VerificarAcerto(Vector2 telaPosicao)
     {
         PointerEventData pointerData = new PointerEventData(eventSystem);
@@ -309,16 +294,22 @@ public class CanhaoController : MonoBehaviour
         return false;
     }
 
-
     private void RotacionarCanhaoMundo(Vector3 posicaoMundo)
     {
-        Vector2 direcao = ((Vector2)posicaoMundo - (Vector2)transform.position).normalized;
+        Vector3 origem = transform.position;
+
+        Vector3 direcao = (posicaoMundo - origem).normalized;
 
         float angulo = Mathf.Atan2(direcao.y, direcao.x) * Mathf.Rad2Deg;
+
         string trigger = DirecaoParaAnimacao(angulo);
+
+        Debug.Log($"Tutorial: rotacionando para {trigger} (ângulo {angulo})");
+        Debug.DrawLine(transform.position, posicaoMundo, Color.red, 2f);
 
         animator.SetTrigger(trigger);
     }
+
 
 
 }

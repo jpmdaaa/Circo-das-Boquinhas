@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using Boquinhas.Core;
 using UnityEngine;
@@ -22,7 +22,7 @@ namespace Boquinhas.ConfigurationSettings
         public TMP_Text text;
         private BoquinhasConfigurationSettings _boquinhasConfigurationSettings;
 
-        [Header("�udios")]
+        [Header("Áudios")]
         public AudioClip audioShowBravo;
         public AudioClip audioShowFracassou;
         public AudioSource audioSource;
@@ -58,9 +58,12 @@ namespace Boquinhas.ConfigurationSettings
                             jogadoresBons++;
                     }
                 }
+                Debug.Log($"Jogadores válidos: {jogadoresValidos}, bons: {jogadoresBons}");
 
-                bool sucesso = jogadoresBons >= Mathf.CeilToInt(jogadoresValidos / 2f);
+                float metade = jogadoresValidos / 2f;
+                bool sucesso = jogadoresBons >= Mathf.CeilToInt(metade);
 
+                Debug.Log($"Meta para sucesso: {Mathf.CeilToInt(metade)}, sucesso: {sucesso}");
                 if (sucesso)
                 {
                     ShowFeedbackPositivo();
@@ -69,9 +72,13 @@ namespace Boquinhas.ConfigurationSettings
                 {
                     ShowFeedbackNegativo();
                 }
+               
 
                 StartCoroutine(IShowStars());
             }
+
+
+
         }
 
 
@@ -96,7 +103,7 @@ namespace Boquinhas.ConfigurationSettings
             text.text = "O SHOW FRACASSOU";
 
             foreach (var confete in confetes)
-                confete.SetActive(false); // ou uma anima��o triste, se quiser
+                confete.SetActive(false); // ou uma animação triste, se quiser
 
             if (audioSource != null && audioShowFracassou != null)
             {
@@ -144,8 +151,17 @@ namespace Boquinhas.ConfigurationSettings
                     slot3.GetComponent<PlayerIcon>().ShowStars(estrelas);
                     yield return new WaitForSeconds(2f);
                 }
+                Debug.Log($"Jogador 0 → Porcentagem: {pontuacoes[0].CalcularPorcentagem()}%");
+                Debug.Log($"Jogador 1 → Porcentagem: {pontuacoes[1].CalcularPorcentagem()}%");
+                Debug.Log($"Jogador 2 → Porcentagem: {pontuacoes[2].CalcularPorcentagem()}%");
+                Debug.Log($"Jogador 3 → Porcentagem: {pontuacoes[3].CalcularPorcentagem()}%");
 
-                Destroy(holder.gameObject); // limpa da mem�ria
+                Debug.Log($"Jogador 0 → Estrelas: {pontuacoes[0].CalcularEstrelas()}");
+                Debug.Log($"Jogador 1 → Estrelas: {pontuacoes[1].CalcularEstrelas()}");
+                Debug.Log($"Jogador 2 → Estrelas: {pontuacoes[2].CalcularEstrelas()}");
+                Debug.Log($"Jogador 3 → Estrelas: {pontuacoes[3].CalcularEstrelas()}");
+
+                Destroy(holder.gameObject); // limpa da memória
             }
         }
 
